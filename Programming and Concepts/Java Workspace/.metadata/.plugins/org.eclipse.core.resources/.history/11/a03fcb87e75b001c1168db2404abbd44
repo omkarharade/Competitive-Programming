@@ -1,0 +1,19 @@
+package basics;
+
+public class First {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		try {
+			int a = 5/0;
+			
+			System.out.print("A");
+		}
+		catch(ArithmeticException e) {
+			System.out.print("World");
+		}
+
+	}
+
+}

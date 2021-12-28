@@ -1,0 +1,17 @@
+package basics;
+
+public class First {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		try {
+			throw 10;
+		}
+		catch(int e) {
+			System.out.print(e);
+		}
+
+	}
+
+}
