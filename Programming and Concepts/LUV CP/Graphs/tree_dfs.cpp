@@ -4,35 +4,31 @@ using namespace std;
 
 const int N = 1e5 + 10;
 vector<int> g[N];
-bool vis[N];
 
-bool dfs(int vertex, int par) {
+int depth[N], height[N];
+
+void dfs(int vertex, int parent = 0) {
 
 	/*
 	take action on vertex after
 	entering the vertex
 	*/
 
-	vis[vertex] = 1;
-
-	bool doesLoopExist  = false;
 
 	for (auto child : g[vertex]) {
-
-		if (vis[child] and child == par) continue;
-		if (vis[child]) return true;
 
 		/*
 		take action on child before
 		entering the child node
 		*/
 
-		doesLoopExist |= dfs(child, vertex);
+		if (child == vertex) continue;
 
-		/*
-		take action on child after
-		exiting the child node
-		*/
+		depth[child] = depth[vertex] + 1;
+
+		dfs(child, vertex);
+
+		height[vertex] = max(height[vertex], height[child] + 1);
 	}
 
 	/*
@@ -40,11 +36,7 @@ bool dfs(int vertex, int par) {
 	exiting the vertex
 	*/
 
-	return doesLoopExist;
-
 }
-
-
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -53,32 +45,24 @@ int main() {
 
 	// code here
 
-	int n, e;
-	cin >> n >> e;
+	int n;
+	cin >> n;
 
-	for (int i = 0; i < e; ++i)
+	for (int i = 0; i < n - 1; ++i)
 	{
 		int v1, v2;
 		cin >> v1 >> v2;
-
 		g[v1].push_back(v2);
 		g[v2].push_back(v1);
-
 	}
 
-	bool loopExists = false;
+	dfs(1);
 
 	for (int i = 1; i <= n; ++i)
 	{
-		if (vis[i]) continue;
-
-		if (dfs(i, 0)) {
-			loopExists = true;
-			break;
-		}
+		cout << depth[i] << " " <<  height[i] << nline;
 	}
 
-	cout << loopExists << nline;
 
 	return 0;
 }
