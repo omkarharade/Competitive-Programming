@@ -63,51 +63,70 @@ void file_i_o()
 #endif
 }
 
+const int N = 1e5;
+int dp[N];
 
-ll n, h;
-vector<ll> vec;
+int combinations(int n) {
 
-bool isSlayed(ll effectRange) {
+	if (n == 0 ) return 1;
+	int maxCombinations = 0;
+	for (int i = 1; i < 7; i++) {
+		if (n - i >= 0)
+			maxCombinations += combinations(n - i);
+	}
+	return maxCombinations;
+}
 
-	ll damage = 0;
-	for (int i = 0; i < n - 1; ++i)
+int combinationsDP(int n) {
+
+	if (n == 0 ) return 1;
+	int maxCombinations = 0;
+	for (int i = 1; i < 7; i++) {
+		if (n - i >= 0) {
+			if (dp[n - i] != -1)
+				maxCombinations += dp[n - i];
+			else {
+				dp[n - i] = combinationsDP(n - i);
+				maxCombinations += dp[n - i];
+			}
+		}
+	}
+	return dp[n] = maxCombinations;
+}
+
+int combinationsBU(int n) {
+	int DP[n + 1];
+
+	fill(DP, DP + n + 1, 0);
+	DP[0] = 1;
+
+	for (int i = 1; i < n + 1; ++i)
 	{
-		damage += (min(effectRange, vec[i + 1] - vec[i]));
+		int comb = 0;
+		for (int j = 1; j < 7; ++j)
+		{
+			if (i - j >= 0) {
+				comb += (DP[i - j]);
+			}
+		}
+		DP[i] = comb;
 	}
 
-	damage += effectRange;
-
-	return (damage >= h ? true : false);
+	return DP[n];
 }
 
 void solve() {
 	// solve here....
 
-	cin >> n >> h;
+	int n = 100;
 
-	vec.resize(n);
+	// dp(30) = 437513522
 
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
+	fill(dp, dp + N, -1);
 
-	ll lo = 1, hi = 1e18;
+	int noOfCombinations = combinations(n);
+	cout << noOfCombinations << nline;
 
-	ll ans = 0;
-
-	while (lo <= hi) {
-
-		ll mid = lo + ((hi - lo) / 2);
-
-		if (isSlayed(mid)) {
-			ans = mid;
-			hi = mid - 1;
-		}
-		else lo = mid + 1;
-	}
-
-	cout << ans << nline;
 }
 
 int main()
@@ -117,7 +136,8 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+
+	fill(dp, dp + 10, -1);
 
 	while (t-- > 0)
 	{

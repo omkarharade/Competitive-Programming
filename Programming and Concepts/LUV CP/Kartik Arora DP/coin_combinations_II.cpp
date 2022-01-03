@@ -63,51 +63,40 @@ void file_i_o()
 #endif
 }
 
+vector<int> coins;
 
-ll n, h;
-vector<ll> vec;
+int combinations(int x, int n) {
 
-bool isSlayed(ll effectRange) {
+	int combCount = 0;
 
-	ll damage = 0;
-	for (int i = 0; i < n - 1; ++i)
+	if (x == 0) return 1;
+
+	for (int i = 0; i < n; ++i)
 	{
-		damage += (min(effectRange, vec[i + 1] - vec[i]));
+		if (x - coins[i] >= 0) {
+			combCount += combinations(x - coins[i], n);
+		}
 	}
 
-	damage += effectRange;
-
-	return (damage >= h ? true : false);
+	return combCount;
 }
 
 void solve() {
 	// solve here....
+	int n, x;
+	cin >> n >> x;
 
-	cin >> n >> h;
-
-	vec.resize(n);
+	coins.resize(n);
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
+		cin >> coins[i];
 	}
 
-	ll lo = 1, hi = 1e18;
+	debug(coins)
 
-	ll ans = 0;
-
-	while (lo <= hi) {
-
-		ll mid = lo + ((hi - lo) / 2);
-
-		if (isSlayed(mid)) {
-			ans = mid;
-			hi = mid - 1;
-		}
-		else lo = mid + 1;
-	}
-
-	cout << ans << nline;
+	int combCnt = combinations(x, n);
+	cout << combCnt << nline;
 }
 
 int main()
@@ -117,7 +106,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
