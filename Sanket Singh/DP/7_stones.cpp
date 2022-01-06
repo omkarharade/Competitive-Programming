@@ -5,7 +5,7 @@ using namespace std;
 #define MOD 1000000007
 #define MOD1 998244353
 #define INF 1e18
-#define nline "\n"
+#define nl "\n"
 #define pb push_back
 #define ppb pop_back
 #define mp make_pair
@@ -63,30 +63,67 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
+vector<int> dp;
 
-	int n;
-	cin >> n;
 
-	vector<ll> vec(n);
+int winnerDP(vector<int> &stonesVec, vector<int> &dp, int n, int k) {
 
-	int pos = 0;
+	if (k == 0) return 0;
+
+	if (dp[k] != -1) return dp[k];
+
+	int p1 = 0;
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-		pos = (vec[pos] > vec[i] ? i : pos);
+		if (k - stonesVec[i] >= 0) {
+			if (winnerDP(stonesVec, dp, n, k - stonesVec[i]) == 0) {
+				p1 = 1;
+				break;
+			}
+		}
 	}
+	return dp[k] = p1;
+}
 
-	cout << n - 1 << nline;
+int winnerBU(vector<int> &stonesVec, int n, int k) {
 
-	for (int i = 0; i < n; ++i)
+	vector<int> dp(k + 1, 0);
+
+	// base case : dp[0] = 0;
+
+	for (int i = 1; i <= k; ++i)
 	{
-		if (i != pos) {
-			cout << pos + 1 << " " << i + 1 << " " << vec[pos] << " " << vec[pos] + abs(pos - i) << nline;
+		for (auto val : stonesVec) {
+
+			if (val > i) continue;
+			if (dp[i - val] == 0) {
+				dp[i] = 1;
+				break;
+			}
 		}
 	}
 
+	return dp[k];
+}
+
+void solve() {
+	// solve here....
+
+	int n, k;
+	cin >> n >> k;
+
+	dp.resize(k + 1, -1);
+
+	vector<int> stonesVec(n);
+
+	for (int i = 0; i < n; i++) cin >> stonesVec[i];
+
+	int p1_DP = winnerDP(stonesVec, dp, n, k);
+	cout << (p1_DP == 1 ? "First" : "Second") << nl;
+
+	int p1_BU = winnerBU(stonesVec, n, k);
+
+	cout << (p1_BU == 1 ? "First" : "Second") << nl;
 }
 
 int main()
@@ -96,7 +133,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

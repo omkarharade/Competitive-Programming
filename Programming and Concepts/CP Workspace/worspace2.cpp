@@ -51,6 +51,7 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 
+
 void file_i_o()
 {
 	ios_base::sync_with_stdio(0);
@@ -62,56 +63,73 @@ void file_i_o()
 #endif
 }
 
+vector<vector<int>> dp;
+vector<vector<int>> maze;
+vector<vector<bool>> visited;
 
-int rodCuttingBU(int n, int a, int b, int c) {
-	int DP[n + 1];
-	fill(DP, DP + n + 1, -1);
-	DP[0] = 0;
+int paths(int i, int j, int n) {
 
-	for (int i = 1; i <= n; ++i)
-	{
+	if (i >= n or j >= n) return 0;
+	if (i < 0 or j < 0) return 0;
+	if (visited[i][j]) return 0;
+	if (maze[i][j] == 1) return 0;
 
-		int rodCut = -1;
+	if (i == n - 1 and j == n - 1) return 1;
 
-		if (i - a >= 0 ) {
+	visited[i][j] = 1;
 
-			if (DP[i - a] != -1) {
-				rodCut = max(rodCut, 1 + DP[i - a]);
-			}
-		}
+	int totalPath = 0;
+	totalPath += paths(i, j + 1, n);
+	totalPath += paths(i + 1, j, n);
+	totalPath += paths(i - 1, j, n);
+	totalPath += paths(i, j - 1, n);
 
-		if (i - b >= 0 ) {
-
-			if (DP[i - b] != -1) {
-				rodCut = max(rodCut, 1 + DP[i - b]);
-			}
-		}
-
-		if (i - c >= 0 ) {
-
-			if (DP[i - c] != -1) {
-				rodCut = max(rodCut, 1 + DP[i - c]);
-			}
-		}
-
-		DP[i] = rodCut;
-	}
-
-	return DP[n];
+	visited[i][j] = 0;
+	return totalPath;
 }
-
 
 
 void solve() {
 	// solve here....
 
-	int n, a, b, c;
-	cin >> n >> a >> b >> c;
+	int n;
+	cin >> n;
 
-	int ans = rodCuttingBU(n, a, b, c);
+	dp.resize(n);
+	maze.resize(n);
+	visited.resize(n);
+	for (int i = 0; i < n; ++i)
+	{
+		dp[i].resize(n, -1);
+		maze[i].resize(n);
+		visited[i].resize(n, false);
+	}
+	dp[n - 1][n - 1] = 1;
 
-	cout << ans << nline;
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			cin >> maze[i][j];
+		}
+	}
 
+	cout << paths(0, 0, n) << nline;
+
+	for (int i = 0; i < n; ++i)
+	{
+		debug(dp[i]);
+	}
+
+	for (int i = 0; i < n; ++i)
+	{
+		debug(maze[i]);
+	}
+
+	for (int i = 0; i < n; ++i)
+	{
+		debug(visited[i]);
+	}
 
 }
 

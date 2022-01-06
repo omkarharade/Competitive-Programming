@@ -63,6 +63,8 @@ void file_i_o()
 #endif
 }
 
+// f(i) = 1 + max(f(i-j))  where j E (0, i-1) and a[i] > a[j]
+
 void solve() {
 	// solve here....
 
@@ -71,21 +73,29 @@ void solve() {
 
 	vector<ll> vec(n);
 
-	int pos = 0;
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-		pos = (vec[pos] > vec[i] ? i : pos);
-	}
+	for (int i = 0; i < n; ++i) cin >> vec[i];
 
-	cout << n - 1 << nline;
+	vector<ll> dp(n, 1);
 
 	for (int i = 0; i < n; ++i)
 	{
-		if (i != pos) {
-			cout << pos + 1 << " " << i + 1 << " " << vec[pos] << " " << vec[pos] + abs(pos - i) << nline;
+		for (int j = 0; j < i; ++j)
+		{
+			if (vec[i] > vec[j]) {
+				dp[i] = max(dp[i], 1 + dp[j]);
+			}
 		}
 	}
+
+	ll ans = LLONG_MIN;
+
+	for (int i = 0; i < n; ++i)
+	{
+		ans = max(ans, dp[i]);
+	}
+
+	cout << ans << nline;
+
 
 }
 
@@ -96,7 +106,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

@@ -63,30 +63,67 @@ void file_i_o()
 #endif
 }
 
+vector<vector<int>>dp;
+
+int lcsDP(string &s1, string &s2, int i, int j, int n) {
+
+	if (i == n or j == n) return 0;
+
+	if (dp[i][j] != -1) return dp[i][j];
+
+	if (s1[i] == s2[j]) {
+		return dp[i][j] = 1 + lcsDP(s1, s2, i + 1, j + 1, n);
+	}
+	else {
+
+		return dp[i][j] = max(lcsDP(s1, s2, i, j + 1, n) , lcsDP(s1, s2, i + 1, j, n));
+	}
+}
+
+int lcsBU(string &s1, string &s2) {
+
+	int n = s1.length(), m = s2.length();
+
+	vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+	for (int i = 1; i <= n; ++i)
+	{
+		for (int j = 1; j <= m; ++j)
+		{
+			if (s1[i - 1] == s2[j - 1]) {
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			}
+			else {
+				dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+			}
+		}
+	}
+
+	return dp[n][m];
+}
+
 void solve() {
 	// solve here....
 
 	int n;
 	cin >> n;
 
-	vector<ll> vec(n);
-
-	int pos = 0;
+	dp.resize(n);
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-		pos = (vec[pos] > vec[i] ? i : pos);
+		dp[i].resize(n, -1);
 	}
 
-	cout << n - 1 << nline;
+	string s1, s2;
+	cin >> s1 >> s2;
+
+	cout << lcsDP(s1, s2, 0, 0, n) << nline;
+	cout << lcsBU(s1, s2);
 
 	for (int i = 0; i < n; ++i)
 	{
-		if (i != pos) {
-			cout << pos + 1 << " " << i + 1 << " " << vec[pos] << " " << vec[pos] + abs(pos - i) << nline;
-		}
+		debug(dp[i])
 	}
-
 }
 
 int main()
@@ -96,7 +133,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
