@@ -66,26 +66,36 @@ void file_i_o()
 void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
+	int n; cin >> n;
 
-	vector<ll> vec(n);
-
-	int pos = 0;
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-		pos = (vec[pos] > vec[i] ? i : pos);
-	}
-
-	cout << n - 1 << nline;
+	vector<set<ll>> vecSet(n);
 
 	for (int i = 0; i < n; ++i)
 	{
-		if (i != pos) {
-			cout << pos + 1 << " " << i + 1 << " " << vec[pos] << " " << vec[pos] + abs(pos - i) << nline;
+		ll n;
+		cin >> n;
+
+		while (n > 0) {
+			vecSet[i].insert(n);
+			n /= 2;
 		}
 	}
+
+	set<int> found;
+
+	for (int i = n; i >= 1; --i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			if (vecSet[j].count(i)) {
+				vecSet[j].clear();
+				found.insert(i);
+				break;
+			}
+		}
+	}
+
+	cout << ((found.size() == n) ? "YES" : "NO") << nline;
 
 }
 
