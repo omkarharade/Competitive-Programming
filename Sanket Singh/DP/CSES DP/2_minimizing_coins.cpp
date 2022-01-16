@@ -63,39 +63,87 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
+vector<int> coins;
+vector<int> dp;
 
-	ll n, l;
-	cin >> n >> l;
+int minimizingCoins(int x, int n) {
 
-	vector<ll> vec(n);
+	if (x == 0) return 0;
+
+	int minCoins = 1e9;
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
+		if (x - coins[i] >= 0) {
+			minCoins = min(minCoins, 1 + minimizingCoins(x - coins[i] , n));
 		}
 	}
 
-	cout << y << nline;
+	return (minCoins == 1e9 ? 1e9 : minCoins);
+}
+
+int minimizingCoinsDP(int x, int n) {
+
+	if (x == 0) return 0;
+	if (dp[x] != -1) return dp[x];
+
+	int minCoins = 1e9;
+	for (int i = 0; i < n; ++i)
+	{
+		if (x - coins[i] >= 0) {
+			minCoins = min(minCoins, 1 + minimizingCoins(x - coins[i], n));
+		}
+	}
+
+	return dp[x] = (minCoins == 1e9 ? 1e9 : minCoins);
+}
+
+int minimizingCoinsBU(int x, int n) {
+
+	vector<int>DP(x + 1, 0);
+	DP[0] = 0;
+
+	for (int i = 1; i <= x; ++i)
+	{
+		int minCoins = 1e9;
+
+		for (int j = 0; j < n; ++j)
+		{
+			if (i - coins[j] >= 0) {
+				minCoins = min(minCoins, 1 + DP[i - coins[j]]);
+			}
+		}
+		DP[i] = (minCoins == 1e9 ? 1e9 : minCoins);
+	}
+	debug(DP)
+	return DP[x];
+}
+
+void solve() {
+	// solve here....
+
+	int n, x;
+	cin >> n >> x;
+
+	coins.resize(n);
+	dp.resize(x + 1, -1);
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> coins[i];
+	}
+
+	// int ans = minimizingCoins(x, n);
+	// int ansDP = minimizingCoinsDP(x, n);
+	int ansBU = minimizingCoinsBU(x, n);
+
+	// cout << (ans == 1e9 ? -1 : ans) << nline;
+	// cout << (ansDP == 1e9 ? -1 : ansDP) << nline;
+	cout << (ansBU == 1e9 ? -1 : ansBU) << nline;
 
 }
+
+
 
 int main()
 {
@@ -104,7 +152,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{

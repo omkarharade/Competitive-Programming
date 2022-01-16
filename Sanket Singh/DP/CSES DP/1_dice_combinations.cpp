@@ -63,37 +63,77 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
+const int N = 1e6 + 10;
+ll dp[N];
 
-	ll n, l;
-	cin >> n >> l;
+int combinations(int n) {
 
-	vector<ll> vec(n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
+	if (n == 0 ) return 1;
+	int maxCombinations = 0;
+	for (int i = 1; i < 7; i++) {
+		if (n - i >= 0)
+			maxCombinations += combinations(n - i);
 	}
+	return maxCombinations;
+}
 
-	ll y = 0;
+ll combinationsDP(int n) {
 
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
+	if (n == 0 ) return 1;
+	if (dp[n] != -1) {
+		return dp[n];
+	}
+	ll maxCombinations = 0;
+	for (int i = 1; i < 7; i++) {
+		if (n - i >= 0) {
+			if (dp[n - i] != -1) {
+				maxCombinations += dp[n - i];
+				maxCombinations % MOD;
+
 			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
+			else {
+				dp[n - i] = combinationsDP(n - i);
+				maxCombinations += dp[n - i];
+				maxCombinations % MOD;
 			}
 		}
 	}
+	return dp[n] = maxCombinations % MOD;
+}
+ll DP[N];
+ll combinationsBU(int n) {
 
-	cout << y << nline;
+	fill(DP, DP + n + 1, 0LL);
+	DP[0] = 1LL;
+
+	for (int i = 1; i < n + 1; ++i)
+	{
+		ll comb = 0;
+		for (int j = 1; j < 7; ++j)
+		{
+			if (i - j >= 0) {
+				comb += (DP[i - j]);
+				comb % MOD;
+			}
+		}
+		DP[i] = comb % MOD;
+	}
+
+	return DP[n] % MOD;
+}
+
+void solve() {
+	// solve here....
+
+	int n;
+	cin >> n;
+
+	// dp(30) = 437513522
+
+	fill(dp, dp + N, -1);
+
+	int noOfCombinations = combinationsBU(n);
+	cout << noOfCombinations << nline;
 
 }
 
@@ -104,7 +144,8 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+
+	fill(dp, dp + 10, -1);
 
 	while (t-- > 0)
 	{

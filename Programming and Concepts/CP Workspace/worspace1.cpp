@@ -66,37 +66,33 @@ void file_i_o()
 void solve() {
 	// solve here....
 
-	int n; cin >> n;
+	ll n, m;
+	cin >> n >> m;
 
-	vector<set<ll>> vecSet(n);
+	map<ll , ll> mp;
 
-	for (int i = 0; i < n; ++i)
+	for (int i = 1; i <= n; ++i)
 	{
-		ll n;
-		cin >> n;
-
-		while (n > 0) {
-			vecSet[i].insert(n);
-			n /= 2;
-		}
-	}
-
-	set<int> found;
-
-	for (int i = n; i >= 1; --i)
-	{
-		for (int j = 0; j < n; ++j)
+		for (int j = 1; j <= m; ++j)
 		{
-			if (vecSet[j].count(i)) {
-				vecSet[j].clear();
-				found.insert(i);
-				break;
-			}
+			ll mx = -1e9;
+
+			mx = max(mx, (1LL * abs(1 - i)) + (1LL * abs(1 - j)));
+			mx = max(mx, (1LL * abs(1 - i)) + (1LL * abs(m - j)));
+			mx = max(mx, (1LL * abs(n - i)) + (1LL * abs(1 - j)));
+			mx = max(mx, (1LL * abs(n - i)) + (1LL * abs(m - j)));
+
+			mp[mx]++;
 		}
 	}
 
-	cout << ((found.size() == n) ? "YES" : "NO") << nline;
+	for (auto m : mp) {
 
+		while (m.ss--) {
+			cout << m.ff << " ";
+		}
+	}
+	cout << nline;
 }
 
 int main()

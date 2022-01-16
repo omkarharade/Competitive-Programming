@@ -63,37 +63,77 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
+vector<int> arr;
 
-	ll n, l;
-	cin >> n >> l;
+int noOfArraysBU(int m, int n) {
 
-	vector<ll> vec(n);
+	vector<vector<ll>> DP(m + 1, vector<ll>(n, 0));
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-	}
 
-	ll y = 0;
+		// :::::::::::::base case :::::::::::::::::::::::::::::::
 
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
+		if (i == 0) {
+
+			if (arr[i] != 0) {
+				DP[arr[i]][i] = 1;
 			}
+			else {
+				for (int e = 1; e <= m; ++e)
+				{
+					DP[e][i] = 1;
+				}
+			}
+			continue;
+		}
 
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
+		// :::::::::::::::::::: base case end ::::::::::::::::::::::::::::::::::::
+
+		if (arr[i] != 0) {
+
+			DP[arr[i]][i] = (DP[arr[i] - 1][i - 1] % MOD) + (DP[arr[i]][i - 1] % MOD) +  ( arr[i] + 1 <= m ? (DP[arr[i] + 1][i - 1] % MOD) : 0);
+			DP[arr[i]][i] %= MOD;
+		}
+		else {
+			for (int e = 1; e <= m; ++e)
+			{
+				DP[e][i] += (DP[e - 1][i - 1] % MOD);
+				DP[e][i] += (DP[e][i - 1] % MOD);
+				DP[e][i] += (e + 1 <= m ? (DP[e + 1][i - 1] % MOD) : 0);
+				DP[e][i] %= MOD;
 			}
 		}
 	}
 
-	cout << y << nline;
+	if (arr[n - 1] != 0) {
+		return DP[arr[n - 1]][n - 1];
+	}
+	else {
+
+		ll ans = 0;
+		for (int e = 1; e <= m; ++e)
+		{
+			ans = (ans + DP[e][n - 1]) % MOD;
+		}
+		return ans;
+	}
+}
+
+void solve() {
+	// solve here....
+
+	int n, m;
+	cin >> n >> m;
+
+	arr.resize(n);
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> arr[i];
+	}
+
+	cout << noOfArraysBU(m, n) << nline;
 
 }
 
@@ -104,7 +144,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

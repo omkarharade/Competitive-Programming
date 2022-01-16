@@ -63,70 +63,26 @@ void file_i_o()
 #endif
 }
 
-const int N = 1e5;
-int dp[N];
-
-int combinations(int n) {
-
-	if (n == 0 ) return 1;
-	int maxCombinations = 0;
-	for (int i = 1; i < 7; i++) {
-		if (n - i >= 0)
-			maxCombinations += combinations(n - i);
-	}
-	return maxCombinations;
-}
-
-int combinationsDP(int n) {
-
-	if (n == 0 ) return 1;
-	int maxCombinations = 0;
-	for (int i = 1; i < 7; i++) {
-		if (n - i >= 0) {
-			if (dp[n - i] != -1)
-				maxCombinations += dp[n - i];
-			else {
-				dp[n - i] = combinationsDP(n - i);
-				maxCombinations += dp[n - i];
-			}
-		}
-	}
-	return dp[n] = maxCombinations;
-}
-
-int combinationsBU(int n) {
-	int DP[n + 1];
-
-	fill(DP, DP + n + 1, 0);
-	DP[0] = 1;
-
-	for (int i = 1; i < n + 1; ++i)
-	{
-		int comb = 0;
-		for (int j = 1; j < 7; ++j)
-		{
-			if (i - j >= 0) {
-				comb += (DP[i - j]);
-			}
-		}
-		DP[i] = comb;
-	}
-
-	return DP[n];
-}
-
 void solve() {
 	// solve here....
 
-	int n = 100;
+	int arr[] = {1, 2, 3, 10, 10, 10, 13, 14};
+	int n = sizeof(arr) / sizeof(int);
 
-	// dp(30) = 437513522
+	// searching fxn : find();
 
-	fill(dp, dp + N, -1);
+	int key;
+	cin >> key;
 
-	int noOfCombinations = combinations(n);
-	cout << noOfCombinations << nline;
+	bool present = binary_search(arr, arr + n, key);
 
+	if (present) {
+		cout << "Present" << nline;
+	}
+	else cout << "Not Present" << nline;
+
+	cout << lower_bound(arr, arr + n, key) - arr << nline;
+	cout << upper_bound(arr, arr + n, key) - arr << nline;
 }
 
 int main()
@@ -136,8 +92,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-
-	fill(dp, dp + 10, -1);
+	// cin >> t;
 
 	while (t-- > 0)
 	{

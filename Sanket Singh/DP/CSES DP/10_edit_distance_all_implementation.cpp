@@ -63,37 +63,101 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
+int editDist(string &s1, string &s2, int i, int j, int n, int m) {
 
-	ll n, l;
-	cin >> n >> l;
+	if (i == -1 and  j == -1) return 0;
+	else if (i == -1 and j != -1) return j + 1;
+	else if (i != -1 and j == -1) return i + 1;
 
-	vector<ll> vec(n);
+	if (s1[i] == s2[j]) return editDist(s1, s2, i - 1, j - 1, n, m);
+
+	else {
+
+		return 1 + min(editDist(s1, s2, i, j - 1, n, m),
+		               min(editDist(s1, s2, i - 1, j, n, m), editDist(s1, s2, i - 1, j - 1, n, m)));
+	}
+}
+
+vector<vector<int>>dp;
+
+int editDistDP(string &s1, string &s2, int i, int j, int n, int m) {
+
+	if (i == -1 and  j == -1) return 0;
+	else if (i == -1 and j != -1) return j + 1;
+	else if (i != -1 and j == -1) return i + 1;
+
+	if (dp[i][j] != -1 ) return dp[i][j];
+
+	if (s1[i] == s2[j]) return dp[i][j] = editDistDP(s1, s2, i - 1, j - 1, n, m);
+
+	else {
+
+		return dp[i][j] = 1 + min(editDistDP(s1, s2, i, j - 1, n, m),
+		                          min(editDistDP(s1, s2, i - 1, j, n, m), editDistDP(s1, s2, i - 1, j - 1, n, m)));
+	}
+}
+
+int editDistBU(string &s1, string &s2, int n, int m) {
+
+	vector<vector<int>> DP(n + 1, vector<int>(m + 1, 0));
+
+	// :::::::::: base case :::::::::::::
+
+
+	for (int i = 1; i <= n; ++i)
+	{
+		DP[i][0] = i;
+	}
+
+	for (int i = 1; i <= m ; ++i)
+	{
+		DP[0][i] = i;
+	}
+
+	// :::::::: base case end ::::::::::
+
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < m; ++j)
 		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
+			if (s1[i] == s2[j]) DP[i + 1][j + 1] = DP[i][j];
 
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
+			else {
+
+				DP[i + 1][j + 1] = 1 + min(DP[i + 1][j], min(DP[i][j + 1], DP[i][j]));
 			}
 		}
 	}
 
-	cout << y << nline;
+	for (int i = 0; i <= n; ++i)
+	{
+		debug(DP[i]);
+	}
+
+	return DP[n][m];
+}
+
+void solve() {
+	// solve here....
+
+	string s1, s2;
+	cin >> s1 >> s2;
+
+	int sLen1 = s1.length();
+	int sLen2 = s2.length();
+
+	cout << editDist(s1, s2, sLen1 - 1, sLen2 - 1, sLen1, sLen2) << nline;
+
+	dp.resize(sLen1 + 1);
+
+	for (int i = 0; i <= sLen1; ++i)
+	{
+		dp[i].resize(sLen2 + 1, -1);
+	}
+
+	cout << editDistDP(s1, s2, sLen1 - 1, sLen2 - 1, sLen1, sLen2) << nline;
+	cout << editDistBU(s1, s2, sLen1, sLen2) << nline;
 
 }
 
@@ -104,7 +168,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

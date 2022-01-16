@@ -63,37 +63,83 @@ void file_i_o()
 #endif
 }
 
+int removingDigits(int n) {
+
+	int temp = n;
+	int steps = 1e9;
+
+	if (n == 0) return 0;
+
+	while (temp > 0) {
+		int digit = temp  % 10;
+
+		if ((digit != 0) and (n - digit >= 0)) {
+			steps = min(steps, 1 + removingDigits(n - digit));
+		}
+		temp /= 10;
+	}
+
+	return steps;
+}
+
+vector<int> dp;
+
+int removingDigitsDP(int n) {
+
+	if (n == 0) return 0;
+
+	if (dp[n] != -1) return dp[n];
+	int temp = n;
+	int steps = 1e9;
+
+
+	while (temp > 0) {
+		int digit = temp  % 10;
+
+		if ((digit != 0) and (n - digit >= 0)) {
+			steps = min(steps, 1 + removingDigits(n - digit));
+		}
+		temp /= 10;
+	}
+
+	return dp[n] = steps;
+}
+
+int removingDigitsBU(int n) {
+
+	vector<int> DP(n + 1, -1);
+	DP[0] = 0;
+
+	for (int i = 1; i <= n; ++i)
+	{
+
+		int temp = i;
+		int steps = 1e9;
+
+		while (temp > 0) {
+			int digit = temp  % 10;
+
+			if ((digit != 0) and (n - digit >= 0)) {
+				steps = min(steps, 1 + DP[i - digit]);
+			}
+			temp /= 10;
+		}
+		DP[i] = steps;
+	}
+	return DP[n];
+}
+
 void solve() {
 	// solve here....
 
-	ll n, l;
-	cin >> n >> l;
+	int n;
+	cin >> n;
 
-	vector<ll> vec(n);
+	// dp.resize(n + 1, -1);
 
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
-		}
-	}
-
-	cout << y << nline;
+	// cout << removingDigits(n) << nline;
+	// cout << removingDigitsDP(n) << nline;
+	cout << removingDigitsBU(n) << nline;
 
 }
 
@@ -104,7 +150,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

@@ -65,36 +65,15 @@ void file_i_o()
 
 void solve() {
 	// solve here....
+	char s[100] = "Today is a rainy, day";
 
-	ll n, l;
-	cin >> n >> l;
+	char *ptr = strtok(s, " ");
+	cout << ptr << nline;
 
-	vector<ll> vec(n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
+	while (ptr != NULL) {
+		ptr = strtok(NULL, " ");
+		cout << ptr << nline;
 	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
-		}
-	}
-
-	cout << y << nline;
-
 }
 
 int main()
@@ -104,7 +83,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{

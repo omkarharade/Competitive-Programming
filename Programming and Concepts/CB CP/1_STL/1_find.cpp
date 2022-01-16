@@ -59,41 +59,29 @@ void file_i_o()
 	cout.tie(0);
 
 #ifndef ONLINE_JUDGE
-	freopen("error.txt", "w", stderr);
+	freopen("error.txt ", "w", stderr);
 #endif
 }
 
 void solve() {
 	// solve here....
 
-	ll n, l;
-	cin >> n >> l;
+	int arr[] = {1, 10 , 11, 9, 100};
+	int n = sizeof(arr) / sizeof(int);
 
-	vector<ll> vec(n);
+	// searching fxn : find();
 
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
+	int key;
+	cin >> key;
+
+	auto it = find(arr, arr + n, key);
+
+	int indx = it - arr;
+
+	if (indx == n) {
+		cout << "Key is not present" << nline;
 	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
-		}
-	}
-
-	cout << y << nline;
+	else cout << indx << nline;
 
 }
 
@@ -104,7 +92,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{

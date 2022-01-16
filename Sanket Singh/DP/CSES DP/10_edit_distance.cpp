@@ -63,37 +63,54 @@ void file_i_o()
 #endif
 }
 
-void solve() {
-	// solve here....
 
-	ll n, l;
-	cin >> n >> l;
+int editDistBU(string &s1, string &s2, int n, int m) {
 
-	vector<ll> vec(n);
+	vector<vector<int>> DP(n + 1, vector<int>(m + 1, 0));
+
+	// :::::::::: base case :::::::::::::
+
+
+	for (int i = 1; i <= n; ++i)
+	{
+		DP[i][0] = i;
+	}
+
+	for (int i = 1; i <= m ; ++i)
+	{
+		DP[0][i] = i;
+	}
+
+	// :::::::: base case end ::::::::::
+
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
-	}
-
-	ll y = 0;
-
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
+		for (int j = 0; j < m; ++j)
 		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
+			if (s1[i] == s2[j]) DP[i + 1][j + 1] = DP[i][j];
 
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
+			else {
+
+				DP[i + 1][j + 1] = 1 + min(DP[i + 1][j], min(DP[i][j + 1], DP[i][j]));
 			}
 		}
 	}
 
-	cout << y << nline;
+	return DP[n][m];
+}
+
+void solve() {
+	// solve here....
+
+	string s1, s2;
+	cin >> s1 >> s2;
+
+	int sLen1 = s1.length();
+	int sLen2 = s2.length();
+
+
+	cout << editDistBU(s1, s2, sLen1, sLen2) << nline;
 
 }
 
@@ -104,7 +121,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

@@ -63,37 +63,88 @@ void file_i_o()
 #endif
 }
 
+bool cmp(string a, string b) {
+
+	if (a.length() == b.length()) {
+		return a < b;
+	}
+	return a.length() > b.length();
+}
+
 void solve() {
 	// solve here....
 
-	ll n, l;
-	cin >> n >> l;
+	string s0;
 
-	vector<ll> vec(n);
+	string s1("hello");
+
+	string s2 = "Hello World";
+	string s3(s2);
+
+	string s4 = s3;
+
+	char a[] = {'a', 'b', 'c', '\0'};
+	string s5(a);
+
+	cout << s0 << nline;
+	cout << s1 << nline;
+	cout << s2 << nline;
+	cout << s3 << nline;
+	cout << s4 << nline;
+	cout << s5 << nline;
+
+	if (s0.empty()) {
+		cout << "s0 is an empty string" << nline;
+	}
+
+	s0.append("I love C++");
+	cout << s0 << nline;
+
+	cout << s0.length() << nline;
+	s0.clear();
+	cout << s0.length() << nline;
+
+	s0 = "apple";
+	s1 = "mango";
+
+	cout << s0.compare(s1) << nline; // if -1 then s0 is smaller, if 0 then same , if +ve then s0 is greater
+
+	if (s1 > s0) {
+		cout << "Mango is lexicographically greater than apple" << nline;
+	}
+
+	cout << s1[0] << nline;
+
+	// find substring
+
+	string s = "I want apple juice";
+
+	int idx = s.find("apple");
+	cout << idx << nline;
+
+	string word = "apple";
+	int len = word.length();
+	s.erase(idx, len + 1 ); // +1 to remove xtra space
+	cout << s << nline;
+
+
+	int n;
+	cin >> n;
+	cin.get();
+
+	string arrStr[100];
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
+		getline(cin, arrStr[i]);
 	}
 
-	ll y = 0;
+	sort(arrStr, arrStr + n, cmp);
 
-	for (int i = 0; i <= 30; ++i)
+	for (int i = 0; i < n; ++i)
 	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
-
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
-		}
+		cout << arrStr[i] << nline;
 	}
-
-	cout << y << nline;
 
 }
 
@@ -104,7 +155,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{

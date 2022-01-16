@@ -66,35 +66,32 @@ void file_i_o()
 void solve() {
 	// solve here....
 
-	ll n, l;
-	cin >> n >> l;
+	vector<int> d{1, 2, 3, 10, 14};
 
-	vector<ll> vec(n);
+	// insert some elements in the middle  -- O(N)
+	// after 3 elements insert 4 elements each of value 100
+	d.insert(d.begin() + 3, 4, 100);
 
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
+	for (auto v : d) {
+		cout << v << ", ";
 	}
+	cout << nline;
 
-	ll y = 0;
+	// erase some elements in the middle
 
-	for (int i = 0; i <= 30; ++i)
-	{
-		ll onesCnt = 0;
-		for (int j = 0; j < n; ++j)
-		{
-			if (vec[j] & (1 << i)) {
-				onesCnt++;
-			}
+	// erases element at index 2
+	d.erase(d.begin() + 2);
 
-			if (onesCnt > (n - onesCnt)) {
-				y = (y | (1 << i));
-			}
-		}
+	// erase elements starting from indx 2 to indx 4
+	d.erase(d.begin() + 2, d.begin() + 5);
+
+	for (auto v : d) {
+		cout << v << ", ";
 	}
+	cout << nline;
 
-	cout << y << nline;
-
+	// remove all elements
+	d.clear();
 }
 
 int main()
@@ -104,7 +101,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
