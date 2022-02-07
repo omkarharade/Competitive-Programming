@@ -83,37 +83,52 @@ void IO(string s) {
 	}
 }
 
+const int N = 1e5 + 10;
+int vis[N];
+vector<int> g[N];
+int level[N];
+
+void bfs(int source) {
+	queue<int> q;
+	q.push(source);
+	vis[source] = 1;
+
+	while (!q.empty()) {
+		int currVertx = q.front();
+		q.pop();
+
+		cout << currVertx << " ";
+
+		for (int child : g[currVertx]) {
+			if (!vis[child]) {
+				q.push(child);
+				vis[child] = 1;
+				level[child] = level[currVertx] + 1;
+			}
+		}
+	}
+	cout << nline;
+}
+
 
 void solve() {
 	// solve here....
 
-	int n, k;
-	cin >> n >> k;
+	int n;
+	cin >> n;
 
-	vector<vector<int>>vec(n, vector<int>(k));
+	for (int i = 0; i < n - 1; ++i)
+	{
+		int x, y;
+		cin >> x >> y;
+		g[x].pb(y);
+		g[y].pb(x);
+	}
 
-	if ((k == 1) or (n % 2 == 0)) {
-		cout << "YES" << nline;
+	bfs(1);
 
-		int num = 1;
-
-		for (int j = 0; j < k; ++j)
-		{
-			for (int i = 0; i < n; ++i)
-			{
-				vec[i][j] = num;
-				num++;
-			}
-		}
-
-		for (auto vr : vec) {
-			for (auto vc : vr) {
-				cout << vc << " ";
-			}
-			cout << nline;
-		}
-	} else {
-		cout << "NO" << nline;
+	for (int i = 1; i <= n; i++) {
+		cout << i << ": " << level[i] << nline;
 	}
 
 
@@ -126,7 +141,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

@@ -83,32 +83,13 @@ void IO(string s) {
 	}
 }
 
+const int N = 60;
+
+vector<vector<int>> freq(N);
+
 
 void solve() {
 	// solve here....
-
-	string s, t;
-	cin >> s >> t;
-
-	int testNum1 = 0, testnum2 = 0;
-
-	for (int i = 0; i < s.length() - 1; ++i)
-	{
-		if ((s[i] < t[i])) {
-			testNum1 = t[i] - s[i];
-		}
-		else {
-			testNum1 = (int('z') + (s[i] - 97));
-		}
-
-
-		if ((s[i] < t[i])) {
-			testNum1 = t[i] - s[i];
-		}
-		else {
-			testNum1 = (int('z') + (s[i] - 97));
-		}
-	}
 
 
 }
@@ -125,6 +106,11 @@ int main()
 	while (t-- > 0)
 	{
 		solve();
+	}
+
+	for (int i = 1; i < N; ++i)
+	{
+
 	}
 
 

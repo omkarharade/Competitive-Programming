@@ -22,7 +22,7 @@ void dfs(int vertex, int parent = 0) {
 		entering the child node
 		*/
 
-		if (child == vertex) continue;
+		if (child == parent) continue;
 
 		depth[child] = depth[vertex] + 1;
 
@@ -56,8 +56,11 @@ int main() {
 		g[v2].push_back(v1);
 	}
 
+
 	dfs(1);
 
+
+	cout << nline;
 	for (int i = 1; i <= n; ++i)
 	{
 		cout << depth[i] << " " <<  height[i] << nline;

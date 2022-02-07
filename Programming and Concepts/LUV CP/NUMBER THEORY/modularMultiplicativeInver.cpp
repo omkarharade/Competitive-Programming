@@ -4,7 +4,6 @@ using namespace std;
 const int M = 1e9 + 7;
 const int N = 1e6 + 10;
 
-
 int binExpoIter(int a, int  b, int m) {
 	int ans = 1;
 

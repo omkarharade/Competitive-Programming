@@ -73,7 +73,7 @@ void IO(string s) {
 	fastIO
 	if (s.empty()) {
 #ifndef ONLINE_JUDGE
-		// freopen("error.txt", "w", stderr);
+		freopen("error.txt", "w", stderr);
 #endif
 	}
 	else {
@@ -83,54 +83,46 @@ void IO(string s) {
 	}
 }
 
+
 void solve() {
 	// solve here....
 
-	int n;
+	ll n;
 	cin >> n;
-
-	vector<int> marks(n + 1);
-
-	for (int i = 1; i <= n; ++i)
+	string str;
+	cin >> str;
+	map<char, ll>mp;
+	for (ll i = 0; i < str.length(); i++)
 	{
-		cin >> marks[i];
+		mp[str[i]]++;
 	}
 
-	sort(marks.begin() + 1, marks.end());
-	// debug(marks)
-	int q;
-	cin >> q;
-	// debug(q)
-	while (q--) {
+	bool flag = 0;
+	char prev = str[0];
+	int i = 0;
 
-		int currMarks; cin >> currMarks;
-		int lo = 1, hi = n;
-
-
-		int ans = 0;
-		while (lo <= hi) {
-
-			int mid = lo + ((hi - lo ) / 2);
-
-			if (marks[mid] <= currMarks) {
-				lo = mid + 1;
-			}
-			else {
-				ans = mid;
-				hi = mid - 1;
-			}
+	while (true) {
+		while (prev == str[i] && mp[str[i]] > 0)
+		{
+			mp[str[i]]--;
+			i++;
 		}
 
-
-		if (ans == 0) {
-			cout << 0 << nline;
+		if (mp[str[i - 1]] != 0)
+		{
+			flag = 0;
+			break;
 		}
-		else {
-			cout << n - ans + 1 << nline;
+		else
+		{
+			flag = 1;
+			if (i < n) {
+				prev = str[i];
+			}
+			else break;
 		}
 	}
-
-
+	cout << (flag ? "YES" : "NO") << endl;
 
 }
 int main()
@@ -153,7 +145,7 @@ int main()
 	if (!usaco) {
 #ifndef ONLINE_JUDGE
 		clock_t end = clock();
-		// cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
+		cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
 #endif
 	}
 	return 0;

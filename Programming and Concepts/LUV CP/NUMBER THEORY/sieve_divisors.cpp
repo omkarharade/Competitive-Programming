@@ -8,8 +8,6 @@ vector<int> divisors[N];
 int main() {
 #ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
-	freopen("output.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
 #endif
 
 
@@ -23,10 +21,10 @@ int main() {
 
 	for (int i = 1; i < 10; ++i)
 	{
-		for (auto d : divisors[i]) {
-			cout << d << " ";
+		if (divisors[i].size() == 2) {
+			cout << "YES" << nline;
 		}
-		cout << nline;
+		else cout << "NO" << nline;
 	}
 
 

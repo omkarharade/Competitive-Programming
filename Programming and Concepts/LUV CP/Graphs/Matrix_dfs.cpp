@@ -83,38 +83,42 @@ void IO(string s) {
 	}
 }
 
+void dfs(int i, int j, int initialColor, int newColor, vector<vector<int>> &image) {
+
+	/*
+	take action on vertex after
+	entering the vertex
+	*/
+
+	int n = image.size();
+	int m = image[0].size();
+
+	if (i < 0 or j < 0) return;
+	if (i >= n || j >= n) return;
+
+	if (image[i][j] != initialColor) return;
+
+	image[i][j] = newColor;
+
+	dfs(i - 1, j, initialColor, newColor, image);
+	dfs(i + 1, j, initialColor, newColor, image);
+	dfs(i, j - 1, initialColor, newColor, image);
+	dfs(i, j + 1, initialColor, newColor, image);
+
+}
+
+vector<vector<int>> floodFill(vector<vector<int>> &image, int sr, int sc, int newColor) {
+	int initialColor = image[sr][sc];
+
+	if (initialColor != newColor)
+		dfs(sr, sc, initialColor, newColor, image);
+
+	return image;
+}
+
 
 void solve() {
 	// solve here....
-
-	int n, k;
-	cin >> n >> k;
-
-	vector<vector<int>>vec(n, vector<int>(k));
-
-	if ((k == 1) or (n % 2 == 0)) {
-		cout << "YES" << nline;
-
-		int num = 1;
-
-		for (int j = 0; j < k; ++j)
-		{
-			for (int i = 0; i < n; ++i)
-			{
-				vec[i][j] = num;
-				num++;
-			}
-		}
-
-		for (auto vr : vec) {
-			for (auto vc : vr) {
-				cout << vc << " ";
-			}
-			cout << nline;
-		}
-	} else {
-		cout << "NO" << nline;
-	}
 
 
 }
@@ -126,7 +130,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
