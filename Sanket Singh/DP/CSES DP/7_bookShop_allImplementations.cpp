@@ -1,4 +1,3 @@
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -63,15 +62,92 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+vector<ll> pages;
+vector<ll> price;
 
-vector<vector<int>> freq(N);
+ll maxPages(ll budget, ll indx, ll n) {
 
+	if (indx == n) return 0;
+	if (budget < price[indx]) {
+		return maxPages(budget, indx + 1, n);
+	}
+
+	return max(maxPages(budget, indx + 1, n) , pages[indx] + maxPages(budget - price[indx], indx + 1, n));
+}
+
+vector<vector<ll>> dp;
+
+ll maxPagesDP(ll budget, ll indx, ll n) {
+	if (indx == n) return 0;
+
+	if (dp[indx][budget] != -1) {
+		return dp[indx][budget];
+	}
+
+	if (budget < price[indx]) {
+		return maxPages(budget, indx + 1, n);
+	}
+
+	return dp[indx][budget] = max(maxPages(budget, indx + 1, n) , pages[indx] + maxPages(budget - price[indx], indx + 1, n));
+
+}
+
+ll maxPagesBU(ll budget, ll n) {
+
+	vector<vector<ll>> DP(n + 1, vector<ll>(budget + 1));
+
+	for (ll i = 0; i < n; ++i)
+	{
+		for (ll j = 0; j <= budget; ++j)
+		{
+
+			if (i == 0) {
+				DP[i][j] = (j < price[i] ? 0 : pages[i]);
+			}
+			else {
+
+				if (j < price[i]) {
+					DP[i][j] = DP[i - 1][j];
+				}
+
+				else {
+					DP[i][j] = max(DP[i - 1][j] , pages[i] +  DP[i - 1][j - price[i]]);
+				}
+			}
+		}
+	}
+
+	return DP[n - 1][budget];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	ll n, budget;
+	cin >> n >> budget;
+
+	pages.resize(n);
+	price.resize(n);
+	dp.resize(n + 1);
+
+	for (ll i = 0; i <= n; ++i)
+	{
+		dp[i].resize(budget + 1, -1);
+	}
+
+	for (ll i = 0; i < n; ++i)
+	{
+		cin >> price[i];
+	}
+
+	for (ll i = 0; i < n; ++i)
+	{
+		cin >> pages[i];
+	}
+
+	// cout << maxPages(budget, 0, n) << nline;
+	// cout << maxPagesDP(budget, 0, n) << nline;
+	cout << maxPagesBU(budget, n) << nline;
 
 }
 
@@ -81,22 +157,14 @@ int main()
 	file_i_o();
 	// Write your code here....
 
-	int t = 1;
-	cin >> t;
+	ll t = 1;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

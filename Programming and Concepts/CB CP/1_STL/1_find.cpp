@@ -59,19 +59,29 @@ void file_i_o()
 	cout.tie(0);
 
 #ifndef ONLINE_JUDGE
-	freopen("error.txt", "w", stderr);
+	freopen("error.txt ", "w", stderr);
 #endif
 }
-
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int arr[] = {1, 10 , 11, 9, 100};
+	int n = sizeof(arr) / sizeof(int);
+
+	// searching fxn : find();
+
+	int key;
+	cin >> key;
+
+	auto it = find(arr, arr + n, key);
+
+	int indx = it - arr;
+
+	if (indx == n) {
+		cout << "Key is not present" << nline;
+	}
+	else cout << indx << nline;
 
 }
 
@@ -82,21 +92,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

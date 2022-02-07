@@ -63,16 +63,67 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+vector<vector<int>>dp;
 
-vector<vector<int>> freq(N);
+int lcsDP(string &s1, string &s2, int i, int j, int n) {
 
+	if (i == n or j == n) return 0;
+
+	if (dp[i][j] != -1) return dp[i][j];
+
+	if (s1[i] == s2[j]) {
+		return dp[i][j] = 1 + lcsDP(s1, s2, i + 1, j + 1, n);
+	}
+	else {
+
+		return dp[i][j] = max(lcsDP(s1, s2, i, j + 1, n) , lcsDP(s1, s2, i + 1, j, n));
+	}
+}
+
+int lcsBU(string &s1, string &s2) {
+
+	int n = s1.length(), m = s2.length();
+
+	vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+
+	for (int i = 1; i <= n; ++i)
+	{
+		for (int j = 1; j <= m; ++j)
+		{
+			if (s1[i - 1] == s2[j - 1]) {
+				dp[i][j] = 1 + dp[i - 1][j - 1];
+			}
+			else {
+				dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
+			}
+		}
+	}
+
+	return dp[n][m];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int n;
+	cin >> n;
 
+	dp.resize(n);
+	for (int i = 0; i < n; ++i)
+	{
+		dp[i].resize(n, -1);
+	}
+
+	string s1, s2;
+	cin >> s1 >> s2;
+
+	cout << lcsDP(s1, s2, 0, 0, n) << nline;
+	cout << lcsBU(s1, s2);
+
+	for (int i = 0; i < n; ++i)
+	{
+		debug(dp[i])
+	}
 }
 
 int main()
@@ -82,21 +133,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

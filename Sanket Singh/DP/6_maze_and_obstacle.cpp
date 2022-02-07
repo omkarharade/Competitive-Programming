@@ -63,16 +63,70 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+int paths(vector<vector<int>> &maze, vector<vector<int>> &dp, int i, int j, int n, int m) {
 
-vector<vector<int>> freq(N);
+	if (i >= n or j >= m) return 0;
+	if ((i == n - 1) and (j == m - 1)) return 1;
 
+	if (maze[i][j] == 0) return 0;
+
+	if (dp[i][j] != -1) return dp[i][j];
+
+	int right = paths(maze, dp, i, j + 1 , n, m);
+
+	int down = paths(maze, dp, i + 1, j, n, m);
+
+	return dp[i][j] = ( right + down );
+}
+
+int pathsBU(vector<vector<int>> &maze, int n, int m) {
+
+	vector<vector<int>> DP(n, vector<int>(m, -1));
+
+	DP[n - 1][m - 1] = 1;
+
+	for (int i = n - 1; i >= 0; --i)
+	{
+		for (int j = m - 1; j >= 0; --j)
+		{
+			if (i == n - 1 and j == m - 1) continue;
+			if (maze[i][j] == 0) {
+				DP[i][j] = 0;
+				continue;
+			}
+
+			int down = (i == n - 1) ? 0 : DP[i + 1][j];
+			int right = (j == m - 1) ? 0 : DP[i][j + 1];
+
+			DP[i][j] = down + right;
+		}
+	}
+
+	return DP[0][0];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int n, m;
+	cin >> n >>  m;
 
+	vector<vector<int>> maze(n, vector<int>(m));
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			cin >> maze[i][j];
+		}
+	}
+
+	vector<vector<int>> dp(n, vector<int>(m, -1));
+
+	int pathCount = paths(maze, dp, 0, 0, n, m);
+	cout << pathCount << nline;
+
+	cout << pathsBU(maze, n, m) << nline;
 }
 
 int main()
@@ -82,21 +136,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

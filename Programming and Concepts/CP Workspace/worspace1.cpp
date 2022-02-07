@@ -1,5 +1,7 @@
+
 #include <bits/stdc++.h>
 using namespace std;
+
 #define MOD 1000000007
 #define MOD1 998244353
 #define INF 1e18
@@ -13,17 +15,18 @@ using namespace std;
 #define set_bits __builtin_popcountll
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
+
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
-
 
 #ifndef ONLINE_JUDGE
 #define debug(x) cerr << #x <<" "; _print(x); cerr << endl;
 #else
 #define debug(x)
 #endif
+
 void _print(ll t) {cerr << t;}
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
@@ -31,6 +34,7 @@ void _print(char t) {cerr << t;}
 void _print(lld t) {cerr << t;}
 void _print(double t) {cerr << t;}
 void _print(ull t) {cerr << t;}
+
 template <class T, class V> void _print(pair <T, V> p);
 template <class T> void _print(vector <T> v);
 template <class T> void _print(set <T> v);
@@ -45,7 +49,6 @@ template <class T> void _print(unordered_set <T> v) {cerr << "[ "; for (T i : v)
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
-#define fastIO ios::sync_with_stdio(0);cin.tie(0);
 
 
 
@@ -69,20 +72,17 @@ ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n
 
 bool usaco = false;
 
-void IO(string s) {
-	fastIO
-	if (s.empty()) {
+
+void file_i_o()
+{
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
 #ifndef ONLINE_JUDGE
 		freopen("error.txt", "w", stderr);
 #endif
-	}
-	else {
-		usaco = true;
-		freopen((s + ".in").c_str(), "r", stdin);
-		freopen((s + ".out").c_str(), "w", stdout);
-	}
 }
-
 
 void solve() {
 	// solve here....
@@ -116,8 +116,10 @@ void solve() {
 		cout << "NO" << nline;
 	}
 
+	for (auto m : mp) {
 
 }
+
 int main()
 {
 	clock_t begin = clock();
@@ -137,9 +139,8 @@ int main()
 
 	if (!usaco) {
 #ifndef ONLINE_JUDGE
-		clock_t end = clock();
-		cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
+	clock_t end = clock();
+	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
 #endif
-	}
 	return 0;
 }

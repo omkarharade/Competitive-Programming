@@ -63,16 +63,61 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+vector<int> coins;
 
-vector<vector<int>> freq(N);
+int combinations(int x, int n) {
 
+	int combCount = 0;
+
+	if (x == 0) return 1;
+
+	for (int i = 0; i < n; ++i)
+	{
+		if (x - coins[i] >= 0) {
+			combCount += combinations(x - coins[i], n);
+		}
+	}
+
+	return combCount;
+}
+
+ll combinationsBU(ll x, ll n) {
+
+	vector<ll> DP(x + 1, 0);
+	DP[0] = 1;
+
+	for (int i = 1; i <= x; ++i)
+	{
+		ll combCount = 0;
+		for (int j = 0; j < n; ++j)
+		{
+			if (i - coins[j] >= 0) {
+				combCount += (DP[i - coins[j]]);
+				combCount %= MOD;
+			}
+		}
+		DP[i] = combCount;
+	}
+
+	return DP[x];
+}
 
 void solve() {
 	// solve here....
+	int n, x;
+	cin >> n >> x;
 
-	cout << y << nline;
+	coins.resize(n);
 
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> coins[i];
+	}
+
+	debug(coins)
+
+	int combCnt = combinationsBU(x, n);
+	cout << combCnt << nline;
 }
 
 int main()
@@ -82,21 +127,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

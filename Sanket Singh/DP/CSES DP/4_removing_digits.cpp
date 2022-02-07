@@ -63,15 +63,83 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+int removingDigits(int n) {
 
-vector<vector<int>> freq(N);
+	int temp = n;
+	int steps = 1e9;
 
+	if (n == 0) return 0;
+
+	while (temp > 0) {
+		int digit = temp  % 10;
+
+		if ((digit != 0) and (n - digit >= 0)) {
+			steps = min(steps, 1 + removingDigits(n - digit));
+		}
+		temp /= 10;
+	}
+
+	return steps;
+}
+
+vector<int> dp;
+
+int removingDigitsDP(int n) {
+
+	if (n == 0) return 0;
+
+	if (dp[n] != -1) return dp[n];
+	int temp = n;
+	int steps = 1e9;
+
+
+	while (temp > 0) {
+		int digit = temp  % 10;
+
+		if ((digit != 0) and (n - digit >= 0)) {
+			steps = min(steps, 1 + removingDigits(n - digit));
+		}
+		temp /= 10;
+	}
+
+	return dp[n] = steps;
+}
+
+int removingDigitsBU(int n) {
+
+	vector<int> DP(n + 1, -1);
+	DP[0] = 0;
+
+	for (int i = 1; i <= n; ++i)
+	{
+
+		int temp = i;
+		int steps = 1e9;
+
+		while (temp > 0) {
+			int digit = temp  % 10;
+
+			if ((digit != 0) and (n - digit >= 0)) {
+				steps = min(steps, 1 + DP[i - digit]);
+			}
+			temp /= 10;
+		}
+		DP[i] = steps;
+	}
+	return DP[n];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int n;
+	cin >> n;
+
+	// dp.resize(n + 1, -1);
+
+	// cout << removingDigits(n) << nline;
+	// cout << removingDigitsDP(n) << nline;
+	cout << removingDigitsBU(n) << nline;
 
 }
 
@@ -82,21 +150,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

@@ -63,16 +63,26 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
-
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int arr[] = {1, 2, 3, 10, 10, 10, 13, 14};
+	int n = sizeof(arr) / sizeof(int);
 
+	// searching fxn : find();
+
+	int key;
+	cin >> key;
+
+	bool present = binary_search(arr, arr + n, key);
+
+	if (present) {
+		cout << "Present" << nline;
+	}
+	else cout << "Not Present" << nline;
+
+	cout << lower_bound(arr, arr + n, key) - arr << nline;
+	cout << upper_bound(arr, arr + n, key) - arr << nline;
 }
 
 int main()
@@ -82,21 +92,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

@@ -63,15 +63,39 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
+// f(i) = 1 + max(f(i-j))  where j E (0, i-1) and a[i] > a[j]
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int n;
+	cin >> n;
+
+	vector<ll> vec(n);
+
+	for (int i = 0; i < n; ++i) cin >> vec[i];
+
+	vector<ll> dp(n, 1);
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < i; ++j)
+		{
+			if (vec[i] > vec[j]) {
+				dp[i] = max(dp[i], 1 + dp[j]);
+			}
+		}
+	}
+
+	ll ans = LLONG_MIN;
+
+	for (int i = 0; i < n; ++i)
+	{
+		ans = max(ans, dp[i]);
+	}
+
+	cout << ans << nline;
+
 
 }
 
@@ -82,21 +106,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

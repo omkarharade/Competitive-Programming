@@ -63,16 +63,35 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
-
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	vector<int> d{1, 2, 3, 10, 14};
 
+	// insert some elements in the middle  -- O(N)
+	// after 3 elements insert 4 elements each of value 100
+	d.insert(d.begin() + 3, 4, 100);
+
+	for (auto v : d) {
+		cout << v << ", ";
+	}
+	cout << nline;
+
+	// erase some elements in the middle
+
+	// erases element at index 2
+	d.erase(d.begin() + 2);
+
+	// erase elements starting from indx 2 to indx 4
+	d.erase(d.begin() + 2, d.begin() + 5);
+
+	for (auto v : d) {
+		cout << v << ", ";
+	}
+	cout << nline;
+
+	// remove all elements
+	d.clear();
 }
 
 int main()
@@ -82,21 +101,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

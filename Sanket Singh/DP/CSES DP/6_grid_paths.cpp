@@ -63,15 +63,115 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+vector<vector<char>> grid;
 
-vector<vector<int>> freq(N);
+bool isValid(int i, int j, int n) {
 
+	if (((i < n) and (j < n) and (i >= 0) and (j >= 0)) and (grid[i][j] != '*')) return true;
+	else return false;
+}
+
+
+int gridPaths(int i, int j, int n) {
+
+	int paths = 0;
+	if (grid[0][0] == '*') return 0;
+
+	if (i == n - 1 and j == n - 1) return 1;
+	if (isValid(i + 1, j, n)) {
+		paths += gridPaths(i + 1, j, n);
+		paths %= MOD;
+	}
+	if (isValid(i, j + 1, n)) {
+		paths += gridPaths(i, j + 1, n);
+		paths %= MOD;
+	}
+
+	return paths;
+}
+
+vector<vector<int>> dp;
+
+int gridPathsDP(int i, int j, int n) {
+
+	if (grid[0][0] == '*') return 0;
+
+	if (isValid(i, j, n) and dp[i][j] != -1) {
+		return dp[i][j];
+	}
+
+	if (i == n - 1 and j == n - 1) return 1;
+
+	int paths = 0;
+
+	if (isValid(i + 1, j, n)) {
+		paths += gridPaths(i + 1, j, n);
+		paths %= MOD;
+	}
+
+	if (isValid(i, j + 1, n)) {
+		paths += gridPaths(i, j + 1, n);
+		paths %= MOD;
+	}
+
+	return dp[i][j] = paths;
+}
+
+int gridPathsBU(int i, int j, int n) {
+
+	if (grid[0][0] == '*') return 0;
+
+	vector<vector<int>> DP(n, vector<int>(n, 0));
+	DP[n - 1][n - 1] = 1;
+
+	for (int i = n; i >= 0; --i)
+	{
+		for (int j = n; j >= 0; --j)
+		{
+
+			if (isValid(i + 1, j, n)) {
+				DP[i][j] += DP[i + 1][j];
+				DP[i][j] %= MOD;
+			}
+
+			if (isValid(i, j + 1, n)) {
+				DP[i][j] += DP[i][j + 1];
+				DP[i][j] %= MOD;
+			}
+
+		}
+	}
+
+	return DP[0][0];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	int n;
+	cin >> n;
+
+	grid.resize(n);
+	dp.resize(n);
+
+	for (int i = 0; i < n; ++i)
+	{
+		grid[i].resize(n);
+		dp[i].resize(n, -1);
+	}
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			cin >> grid[i][j];
+
+		}
+		debug(grid[i])
+	}
+	// cout << gridPaths(0, 0, n) << nline;
+	// cout << gridPathsDP(0, 0, n) << nline;
+	cout << gridPathsBU(0, 0, n) << nline;
 
 }
 
@@ -82,21 +182,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

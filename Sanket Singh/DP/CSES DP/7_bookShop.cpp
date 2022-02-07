@@ -63,17 +63,6 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
-
-void solve() {
-	// solve here....
-
-	cout << y << nline;
-
-}
 
 int main()
 {
@@ -81,22 +70,47 @@ int main()
 	file_i_o();
 	// Write your code here....
 
-	int t = 1;
-	cin >> t;
+	int n, budget;
+	cin >> n >> budget;
 
-	while (t-- > 0)
+	vector<int> pages(n);
+	vector<int> price(n);
+
+	for (int i = 0; i < n; ++i)
 	{
-		solve();
+		cin >> price[i];
 	}
 
-	for (int i = 1; i < N; ++i)
+	for (int i = 0; i < n; ++i)
 	{
-
+		cin >> pages[i];
 	}
 
+	vector<vector<int>> DP(n , vector<int>(budget + 1));
 
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j <= budget; ++j)
+		{
 
-	if (!usaco) {
+			if (i == 0) {
+				DP[i][j] = (j < price[i] ? 0 : pages[i]);
+			}
+			else {
+
+				if (j < price[i]) {
+					DP[i][j] = DP[i - 1][j];
+				}
+
+				else {
+					DP[i][j] = max(DP[i - 1][j] , pages[i] +  DP[i - 1][j - price[i]]);
+				}
+			}
+		}
+	}
+
+	cout <<  DP[n - 1][budget] << nline;
+
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

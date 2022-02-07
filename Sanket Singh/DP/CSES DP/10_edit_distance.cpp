@@ -63,15 +63,54 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
 
-vector<vector<int>> freq(N);
+int editDistBU(string &s1, string &s2, int n, int m) {
 
+	vector<vector<int>> DP(n + 1, vector<int>(m + 1, 0));
+
+	// :::::::::: base case :::::::::::::
+
+
+	for (int i = 1; i <= n; ++i)
+	{
+		DP[i][0] = i;
+	}
+
+	for (int i = 1; i <= m ; ++i)
+	{
+		DP[0][i] = i;
+	}
+
+	// :::::::: base case end ::::::::::
+
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			if (s1[i] == s2[j]) DP[i + 1][j + 1] = DP[i][j];
+
+			else {
+
+				DP[i + 1][j + 1] = 1 + min(DP[i + 1][j], min(DP[i][j + 1], DP[i][j]));
+			}
+		}
+	}
+
+	return DP[n][m];
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	string s1, s2;
+	cin >> s1 >> s2;
+
+	int sLen1 = s1.length();
+	int sLen2 = s2.length();
+
+
+	cout << editDistBU(s1, s2, sLen1, sLen2) << nline;
 
 }
 
@@ -82,21 +121,12 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

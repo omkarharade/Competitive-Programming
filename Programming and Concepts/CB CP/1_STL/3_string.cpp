@@ -63,15 +63,88 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
+bool cmp(string a, string b) {
 
-vector<vector<int>> freq(N);
-
+	if (a.length() == b.length()) {
+		return a < b;
+	}
+	return a.length() > b.length();
+}
 
 void solve() {
 	// solve here....
 
-	cout << y << nline;
+	string s0;
+
+	string s1("hello");
+
+	string s2 = "Hello World";
+	string s3(s2);
+
+	string s4 = s3;
+
+	char a[] = {'a', 'b', 'c', '\0'};
+	string s5(a);
+
+	cout << s0 << nline;
+	cout << s1 << nline;
+	cout << s2 << nline;
+	cout << s3 << nline;
+	cout << s4 << nline;
+	cout << s5 << nline;
+
+	if (s0.empty()) {
+		cout << "s0 is an empty string" << nline;
+	}
+
+	s0.append("I love C++");
+	cout << s0 << nline;
+
+	cout << s0.length() << nline;
+	s0.clear();
+	cout << s0.length() << nline;
+
+	s0 = "apple";
+	s1 = "mango";
+
+	cout << s0.compare(s1) << nline; // if -1 then s0 is smaller, if 0 then same , if +ve then s0 is greater
+
+	if (s1 > s0) {
+		cout << "Mango is lexicographically greater than apple" << nline;
+	}
+
+	cout << s1[0] << nline;
+
+	// find substring
+
+	string s = "I want apple juice";
+
+	int idx = s.find("apple");
+	cout << idx << nline;
+
+	string word = "apple";
+	int len = word.length();
+	s.erase(idx, len + 1 ); // +1 to remove xtra space
+	cout << s << nline;
+
+
+	int n;
+	cin >> n;
+	cin.get();
+
+	string arrStr[100];
+
+	for (int i = 0; i < n; ++i)
+	{
+		getline(cin, arrStr[i]);
+	}
+
+	sort(arrStr, arrStr + n, cmp);
+
+	for (int i = 0; i < n; ++i)
+	{
+		cout << arrStr[i] << nline;
+	}
 
 }
 
@@ -82,21 +155,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";

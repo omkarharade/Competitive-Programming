@@ -63,16 +63,17 @@ void file_i_o()
 #endif
 }
 
-const int N = 60;
-
-vector<vector<int>> freq(N);
-
-
 void solve() {
 	// solve here....
+	char s[100] = "Today is a rainy, day";
 
-	cout << y << nline;
+	char *ptr = strtok(s, " ");
+	cout << ptr << nline;
 
+	while (ptr != NULL) {
+		ptr = strtok(NULL, " ");
+		cout << ptr << nline;
+	}
 }
 
 int main()
@@ -82,21 +83,13 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
 		solve();
 	}
 
-	for (int i = 1; i < N; ++i)
-	{
-
-	}
-
-
-
-	if (!usaco) {
 #ifndef ONLINE_JUDGE
 	clock_t end = clock();
 	cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
