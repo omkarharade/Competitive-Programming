@@ -83,61 +83,79 @@ void IO(string s) {
 	}
 }
 
+int n;
+vector<vector<ll>> dp;
+vector<vector<ll>>vec;
+
+// day starting from 0
+// activities 0 1 2
+
+ll maxHappiness(int day, int prevSelection) {
+
+	// base case
+	if (day == n) return 0;
+
+	ll maxHappy = -1;
+
+	for (int i = 0; i < 3; ++i)
+	{
+
+		if (i != prevSelection)
+			maxHappy = max(maxHappy, vec[day][i] + maxHappiness(day + 1, i));
+	}
+
+	return maxHappy;
+}
+
+ll maxHappinessDP(int day, int prevSelection) {
+
+	// base case
+	if (day == n) return 0;
+
+	ll maxHappy = -1;
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if ((prevSelection != -1 ) and  (dp[day][prevSelection] != -1)) return dp[day][prevSelection];
+		if (i != prevSelection)
+			maxHappy = max(maxHappy, vec[day][i] + maxHappinessDP(day + 1, i));
+	}
+
+	if (prevSelection != -1) return dp[day][prevSelection] = maxHappy;
+	else return maxHappy;
+}
+
+
 
 void solve() {
 	// solve here....
 
-	int n;
 	cin >> n;
 
-	map<ll, ll> mp1;
-	set<pair<ll, ll>> st1;
+	dp.resize(n);
+	vec.resize(n);
 
 	for (int i = 0; i < n; ++i)
 	{
-		ll in;
-		cin >> in;
-
-		mp1[in]++;
-	}
-
-	for (auto e : mp1) {
-		st1.insert({e.ss, e.ff});
-	}
-
-	debug(st1)
-
-	while (st1.size() >= 2) {
-
-		pair<ll, ll> it = *st1.rbegin();
-
-		ll cnt1 = it.ff;
-		ll x1 = it.ss;
-		st1.erase(it);
-
-		pair<ll, ll> it2 = *st1.rbegin();
-		ll cnt2 = it2.ff;
-		ll x2 = it2.ss;
-		st1.erase(it2);
-
-		cnt1--, cnt2--;
-
-		if (cnt1 > 0) st1.insert({cnt1, x1 });
-
-		if (cnt2 > 0) st1.insert({cnt2, x2 });
-
-		debug(st1)
+		dp[i].resize(3, -1);
+		vec[i].resize(3);
 
 	}
 
-	ll sum = 0;
-
-	for (auto s : st1) {
-		sum += s.ff;
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cin >> vec[i][j];
+		}
 	}
 
-	cout << sum << nline;
+	debug(vec)
 
+	cout << maxHappiness(0, -1) << nline;
+	cout << maxHappinessDP(0, -1) << nline;
+
+	debug(dp)
 }
 int main()
 {
@@ -147,7 +165,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

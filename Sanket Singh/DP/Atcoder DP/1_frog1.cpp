@@ -83,61 +83,104 @@ void IO(string s) {
 	}
 }
 
+int n;
+vector<ll> height;
+// vector<ll> dp;
+
+
+// ll minCost(int indx) {
+// 	ll cost1 = 1e9, cost2 = 1e9;
+
+// 	if (indx + 1 < n) {
+// 		cost1 = abs(height[indx] - height[indx + 1]) + minCost(indx + 1);
+// 	}
+
+
+// 	if (indx + 2 < n) {
+// 		cost2 = abs(height[indx] - height[indx + 2]) + minCost(indx + 2);
+// 	}
+
+// 	if ((cost1 == 1e9) and (cost2 == 1e9)) {
+// 		return 0;
+// 	}
+
+// 	return min(cost1, cost2);
+// }
+
+
+
+// // 30 10 60 10 60 50
+// // 40 40 10 40 10  0
+
+
+
+// ll minCostDP(int indx) {
+
+// 	if (dp[indx] != -1) {
+// 		return dp[indx];
+// 	}
+
+// 	if (indx >= n) return 1e9;
+
+// 	ll cost1 = 1e9, cost2 = 1e9;
+
+// 	if (indx + 1 < n) {
+// 		cost1 = abs(height[indx] - height[indx + 1]) + minCostDP(indx + 1);
+// 	}
+
+
+// 	if (indx + 2 < n) {
+// 		cost2 = abs(height[indx] - height[indx + 2]) + minCostDP(indx + 2);
+// 	}
+
+// 	if ((cost1 == 1e9) and (cost2 == 1e9)) {
+// 		return 0;
+// 	}
+
+
+// 	return dp[indx] =  min(cost1, cost2);
+// }
+
+ll minCostBU(int n) {
+
+	vector<ll> DP(n, -1);
+	DP[n - 1] = 0;
+
+	for (int i = n - 2; i >= 0; --i)
+	{
+		ll minCost = 1e9;
+		if (i + 1 < n) {
+			minCost = min(minCost,  abs(height[i] - height[i + 1]) + DP[i + 1]);
+		}
+
+		if (i + 2 < n) {
+			minCost = min(minCost, abs(height[i] - height[i + 2]) + DP[i + 2]);
+		}
+
+		DP[i] = minCost;
+	}
+
+	return DP[0];
+}
+
 
 void solve() {
 	// solve here....
 
-	int n;
+
 	cin >> n;
 
-	map<ll, ll> mp1;
-	set<pair<ll, ll>> st1;
+	height.resize(n);
+	// dp.resize(n, -1);
 
 	for (int i = 0; i < n; ++i)
 	{
-		ll in;
-		cin >> in;
-
-		mp1[in]++;
+		cin >> height[i];
 	}
 
-	for (auto e : mp1) {
-		st1.insert({e.ss, e.ff});
-	}
+	debug(height)
 
-	debug(st1)
-
-	while (st1.size() >= 2) {
-
-		pair<ll, ll> it = *st1.rbegin();
-
-		ll cnt1 = it.ff;
-		ll x1 = it.ss;
-		st1.erase(it);
-
-		pair<ll, ll> it2 = *st1.rbegin();
-		ll cnt2 = it2.ff;
-		ll x2 = it2.ss;
-		st1.erase(it2);
-
-		cnt1--, cnt2--;
-
-		if (cnt1 > 0) st1.insert({cnt1, x1 });
-
-		if (cnt2 > 0) st1.insert({cnt2, x2 });
-
-		debug(st1)
-
-	}
-
-	ll sum = 0;
-
-	for (auto s : st1) {
-		sum += s.ff;
-	}
-
-	cout << sum << nline;
-
+	cout << minCostBU(n) << nline;
 }
 int main()
 {
@@ -147,7 +190,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
