@@ -83,49 +83,51 @@ void IO(string s) {
 	}
 }
 
+vector<ll> weight;
+vector<ll> value;
+
 
 void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
+	ll N, W;
+	cin >> N >> W;
 
-	vector<ll> vec(n);
-	vector<ll> vec2(n);
+	weight.resize(N + 1);
+	value.resize(N + 1);
 
-	for (int i = 0; i < n; i++) cin >> vec[i];
+	for (int i = 1; i <= N; ++i)
+	{
+		cin >> weight[i];
+		cin >> value[i];
+	}
 
-	if (count(all(vec), 1) == 1) {
-		int indx1 = -1;
-		for (int i = 0; i < n; ++i)
+	// SPACE OPTIMIZED AS ONLY 2 ARRAYS ARE USED
+
+	vector<ll> dp1(W + 1, 0);
+	vector<ll> dp2(W + 1, 0);
+
+	for (int i = 1; i <= N; ++i)
+	{
+		for (int j = 1; j <= W; ++j)
 		{
-			if (vec[i] == 1) {
-				indx1 = i;
-				break;
+			if (weight[i] > j) {
+				dp2[j] = dp1[j];
+			}
+
+			else {
+
+				// dp(current) = max(do not consider, consider);
+
+				dp2[j] = max(dp1[j], value[i] + dp1[j - weight[i]]);
 			}
 		}
 
-		for (int i = 0; i < n - 1; ++i)
-		{
-
-			ll e1 = vec[(i + indx1) % n];
-			ll e2 = vec[(i + 1 + indx1) % n];
-
-			debug(e1)
-			debug(e2)
-			debug(indx1)
-			if (e2 > e1 + 1) {
-				cout << "NO" << nline;
-				return;
-			}
-		}
-
-		cout << "YES" << nline;
-	}
-	else {
-		cout << "NO" << nline;
+		dp2.swap(dp1);
+		dp2.clear();
 	}
 
+	cout << dp1[W] << nline;
 
 }
 int main()
@@ -136,7 +138,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

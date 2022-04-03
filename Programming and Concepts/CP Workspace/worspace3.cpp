@@ -83,46 +83,24 @@ void IO(string s) {
 	}
 }
 
+ll N = 1e3 + 5;
+ll mod = 998244353;
+vector<ll> fact(N);
 
 void solve() {
 	// solve here....
 
 	ll n;
 	cin >> n;
-	string str;
-	cin >> str;
-	map<char, ll>mp;
-	for (ll i = 0; i < str.length(); i++)
-	{
-		mp[str[i]]++;
+
+	if (n % 2 != 0) {
+		cout << 0 << nline;
+		return;
 	}
 
-	bool flag = 0;
-	char prev = str[0];
-	int i = 0;
+	ll f = n / 2;
 
-	while (true) {
-		while (prev == str[i] && mp[str[i]] > 0)
-		{
-			mp[str[i]]--;
-			i++;
-		}
-
-		if (mp[str[i - 1]] != 0)
-		{
-			flag = 0;
-			break;
-		}
-		else
-		{
-			flag = 1;
-			if (i < n) {
-				prev = str[i];
-			}
-			else break;
-		}
-	}
-	cout << (flag ? "YES" : "NO") << endl;
+	cout << ((fact[f] % mod) * (fact[f] % mod)) % mod << nline;
 
 }
 int main()
@@ -131,6 +109,13 @@ int main()
 	fastIO
 	IO("");
 	// Write your code here....
+
+
+	fact[0] = 1;
+	for (int i = 1; i < N; ++i)
+	{
+		fact[i] = ((i % mod) * (fact[i - 1] % mod) ) % mod;
+	}
 
 	int t = 1;
 	cin >> t;
