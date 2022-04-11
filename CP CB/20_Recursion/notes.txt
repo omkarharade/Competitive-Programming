@@ -1,0 +1,6 @@
+Easiest Way to Approach to Recursive Problem
+
+1) Figure out the Base Case.
+2) Assume Sub Problems can be solved by recursion (automatically).
+3) using the sub-[roblem write the answer for the current problem.
+

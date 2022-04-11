@@ -67,49 +67,113 @@ ll mod_div(ll a, ll b, ll m) {a = a % m; b = b % m; return (mod_mul(a, mminvprim
 ll phin(ll n) {ll number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (ll i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 /*--------------------------------------------------------------------------------------------------------------------------*/
 
+bool usaco = false;
+
+void IO(string s) {
+	fastIO
+	if (s.empty()) {
+#ifndef ONLINE_JUDGE
+		freopen("error.txt", "w", stderr);
+#endif
+	}
+	else {
+		usaco = true;
+		freopen((s + ".in").c_str(), "r", stdin);
+		freopen((s + ".out").c_str(), "w", stdout);
+	}
+}
 
 
-void solve(int test) {
+void solve() {
 	// solve here....
 
-	google(test);
-	int n;
+	ll n;
 	cin >> n;
 
 	vector<ll> vec(n);
 
+	ll oddNums = 0;
+
 	for (int i = 0; i < n; ++i)
 	{
 		cin >> vec[i];
+
+		if ((vec[i] % 2) != 0)oddNums++;
+
 	}
 
-	sort(all(vec));
+	ll maxElem = *max_element(all(vec));
 
-	ll currReqNum = 1;
-	ll ans = 0;
+	if (maxElem % 2 != 0) {
+		oddNums = n - oddNums;
+	}
 
-	for (int i = 0; i < n; ++i)
-	{
-		if (vec[i] >= currReqNum) {
-			currReqNum++;
+
+	debug(maxElem)
+	ll sum = accumulate(all(vec), 0LL);
+	debug(sum)
+
+	ll req = (n * maxElem) - sum;
+
+
+
+	if (oddNums == 0) {
+
+		ll ans = 2 * (req / 3);
+		req %= 3;
+
+		if (req == 1) {
 			ans++;
 		}
+		else {
+			ans += 2;
+		}
+
+		cout << ans << nline;
+		return;
 	}
 
-	cout << ans << nline;
+
+
+
+	if (oddNums + (2 * (oddNums - 1)) >= req) {
+		cout << oddNums + oddNums - 1 << nline;
+	}
+	else {
+		ll days = oddNums + oddNums - 1;
+		req -= (oddNums + (2 * (oddNums - 1)));
+
+		days += (2 * (req / 3));
+		req %= 3;
+
+		if (req != 0) days++;
+
+		cout << days << nline;
+	}
+
 }
 int main()
 {
 	clock_t begin = clock();
 	fastIO
+	IO("");
 	// Write your code here....
 
 	int t = 1;
 	cin >> t;
 
-	for (int i = 0; i < t; ++i)
+	while (t-- > 0)
 	{
-		solve(i + 1);
+		solve();
+	}
+
+
+
+	if (!usaco) {
+#ifndef ONLINE_JUDGE
+		clock_t end = clock();
+		cout << "\n\nExecuted In: " << double(end - begin) / CLOCKS_PER_SEC * 1000 << " ms";
+#endif
 	}
 	return 0;
 }

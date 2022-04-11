@@ -1,0 +1,7 @@
+shift disk 1 from A to C
+shift disk 2 from A to B
+shift disk 1 from C to B
+shift disk 3 from A to C
+shift disk 1 from B to A
+shift disk 2 from B to C
+shift disk 1 from A to C

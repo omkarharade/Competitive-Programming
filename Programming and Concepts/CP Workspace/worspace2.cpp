@@ -87,44 +87,9 @@ void IO(string s) {
 void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
-
-	vector<ll> vec(n);
-	vector<ll> vec2(n);
-
-	for (int i = 0; i < n; i++) cin >> vec[i];
-
-	if (count(all(vec), 1) == 1) {
-		int indx1 = -1;
-		for (int i = 0; i < n; ++i)
-		{
-			if (vec[i] == 1) {
-				indx1 = i;
-				break;
-			}
-		}
-
-		for (int i = 0; i < n - 1; ++i)
-		{
-
-			ll e1 = vec[(i + indx1) % n];
-			ll e2 = vec[(i + 1 + indx1) % n];
-
-			debug(e1)
-			debug(e2)
-			debug(indx1)
-			if (e2 > e1 + 1) {
-				cout << "NO" << nline;
-				return;
-			}
-		}
-
-		cout << "YES" << nline;
-	}
-	else {
-		cout << "NO" << nline;
-	}
+	ll x, y;
+	cin >> x >> y;
+	cout << (y - 1) / x << nline;
 
 
 }
