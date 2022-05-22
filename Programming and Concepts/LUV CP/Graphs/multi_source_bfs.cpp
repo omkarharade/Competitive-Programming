@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -63,9 +61,104 @@ void file_i_o()
 #endif
 }
 
+const int N = 1e3 + 10;
+const int inf = 1e9 + 10;
+
+int val[N][N];
+int vis[N][N];
+int lev[N][N];
+int n,m;
+
+vector<pair<int, int>> movements = {
+	{0,-1}, {0,1}, {1,0}, {-1, 0}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+};
+
+bool isValid(int i, int j){
+	return i >= 0 and  j >= 0 and  i < n and  j < m;
+}
+
+void init(){
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			vis[i][j] = 0;
+			lev[i][j] = inf;
+		}
+	}
+}
+
+int bfs(){
+	int mx = 0;
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			mx = max(mx, val[i][j]);
+		}
+	}
+	queue<pair<int,int>> q;
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			if(mx == val[i][j]){
+				q.push({i,j});
+				lev[i][j] = 0;
+				vis[i][j] = 1;
+			}
+		}
+	}
+
+	int ans = 0;
+
+	while(!q.empty()){
+
+		auto v = q.front();
+		q.pop();
+
+		int vx = v.ff;
+		int vy = v.ss;
+
+		for(auto mov: movements){
+			int child_x = mov.ff + vx;
+			int child_y = mov.ss + vy;
+
+			if(!isValid(child_x, child_y)) continue;
+			if(vis[child_x][child_y]) continue;
+
+			q.push({child_x, child_y});
+			lev[child_x][child_y] = lev[vx][vy] + 1;
+			vis[child_x][child_y] = 1;
+
+			ans = max(ans, lev[child_x][child_y]);
+		}
+	}
+
+	return ans;
+}
+
+
 void solve(){
 	// solve here....
 
+	// https://www.codechef.com/problems/SNSOCIAL
+
+
+	init(); // reset
+	cin >> n >> m;
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < m; ++j)
+		{
+			cin >> val[i][j];
+		}
+	}
+
+	cout << bfs() << nline;
 }
 
 int main()
@@ -88,9 +181,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>

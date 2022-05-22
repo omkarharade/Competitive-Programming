@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -63,8 +61,44 @@ void file_i_o()
 #endif
 }
 
+const int N = 1e5+10;
+const int inf = 1e9 + 10;
+
+vector<pair<int,int>> g[N];
+void dijkstra(int source){
+
+	vector<bool> vis(N, 0);
+	vector<int> dist(N, inf);
+
+	set<pair<int, int>> st;
+
+	st.insert({0, source});
+	dist[source] = 0;
+
+	while(st.size() > 0){
+		auto node = *st.begin();
+		st.erase(st.begin());
+		int v = node.ss;
+		int v_dist = node.ff;
+
+		if(vis[v]) continue;
+		vis[v] = 1;
+
+		for(auto child: g[v]){
+			int child_v = child.ff;
+			int wt = child.ss;
+
+			if(dist[v] + wt < dist[child_v]){
+				dist[child_v] = dist[v] + wt;
+				st.insert({dist[child_v], child_v});
+			}
+		}
+	}
+}
+
 void solve(){
 	// solve here....
+
 
 }
 
@@ -88,9 +122,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>

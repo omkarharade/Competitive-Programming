@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -63,8 +61,77 @@ void file_i_o()
 #endif
 }
 
+
+const int N = 1e5 + 10;
+const int inf = 1e9 + 10;
+
+vector<pair<int,int>> g[N];
+vector<int> lev(N, inf);
+int n, m;
+
+
+int bfs(){
+
+	deque<int> dq;
+	dq.pb(1);
+	lev[1] = 0;
+
+	while(!dq.empty()){
+
+		int curr_v = dq.front();
+		dq.pop_front();
+
+		for(auto child: g[curr_v]){
+
+			int child_v = child.ff;
+			int wt = child.ss;
+
+			if(lev[curr_v] + wt < lev[child_v]){
+
+				lev[child_v] = lev[curr_v] + wt;
+
+				if(wt == 1){
+					dq.push_back(child_v);
+				}
+				else{
+					dq.push_front(child_v);
+				}
+			}
+		}
+	}
+
+	return (lev[n] == inf ? -1 : lev[n]); // n is the destination
+}
+
 void solve(){
 	// solve here....
+	// https://www.codechef.com/problems/REVERSE
+
+	/*
+
+	7 7
+	1 2 
+	3 2
+	3 4
+	7 4
+	6 2
+	5 6
+	7 5
+
+*/
+
+	cin >> n >> m;
+
+	for (int i = 0; i < m; ++i)
+	{
+		int x,y;
+		cin >> x >> y;
+
+		g[x].pb({y, 0});
+		g[y].pb({x, 1});
+	}
+
+	cout << bfs() << nline;
 
 }
 
@@ -75,7 +142,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
@@ -88,9 +154,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>
