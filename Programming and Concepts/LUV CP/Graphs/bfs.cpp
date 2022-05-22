@@ -88,10 +88,12 @@ int vis[N];
 vector<int> g[N];
 int level[N];
 
+
 void bfs(int source) {
 	queue<int> q;
 	q.push(source);
 	vis[source] = 1;
+
 
 	while (!q.empty()) {
 		int currVertx = q.front();
@@ -124,6 +126,8 @@ void solve() {
 		g[x].pb(y);
 		g[y].pb(x);
 	}
+
+
 
 	bfs(1);
 

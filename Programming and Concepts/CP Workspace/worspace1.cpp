@@ -83,73 +83,15 @@ void IO(string s) {
 	}
 }
 
+void f(string &s, int n, int i) {
+
+
+}
+
 
 void solve() {
 	// solve here....
 
-	ll n;
-	cin >> n;
-
-	vector<ll> vec(n);
-
-	ll oddNums = 0;
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-
-		if ((vec[i] % 2) != 0)oddNums++;
-
-	}
-
-	ll maxElem = *max_element(all(vec));
-
-	if (maxElem % 2 != 0) {
-		oddNums = n - oddNums;
-	}
-
-
-	debug(maxElem)
-	ll sum = accumulate(all(vec), 0LL);
-	debug(sum)
-
-	ll req = (n * maxElem) - sum;
-
-
-
-	if (oddNums == 0) {
-
-		ll ans = 2 * (req / 3);
-		req %= 3;
-
-		if (req == 1) {
-			ans++;
-		}
-		else {
-			ans += 2;
-		}
-
-		cout << ans << nline;
-		return;
-	}
-
-
-
-
-	if (oddNums + (2 * (oddNums - 1)) >= req) {
-		cout << oddNums + oddNums - 1 << nline;
-	}
-	else {
-		ll days = oddNums + oddNums - 1;
-		req -= (oddNums + (2 * (oddNums - 1)));
-
-		days += (2 * (req / 3));
-		req %= 3;
-
-		if (req != 0) days++;
-
-		cout << days << nline;
-	}
 
 }
 int main()

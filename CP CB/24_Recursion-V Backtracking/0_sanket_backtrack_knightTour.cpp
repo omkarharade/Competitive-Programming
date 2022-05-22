@@ -83,43 +83,70 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
+void display(vector<vector<int>> &grid, int n) {
 
-	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			cout << grid[i][j] << " ";
 		}
+		cout << nline;
+	}
+}
+
+bool isSafe(int i, int j, int n, vector<vector<bool>> &visited) {
+
+	return ((i < n) and (j < n) and (i >= 0) and (j >= 0) and (visited[i][j] == false));
+}
+
+void knightsTour(vector<vector<int>> &grid, int i, int j, int n, int count, vector<vector<bool>> &visited) {
+
+	if (count == ((n * n) - 1)) {
+		grid[i][j] = count;
+
+		display(grid, n);
+		cout << "\n\n";
 		return;
 	}
 
-	for (int i = indx; i < n; ++i)
+	if (count >= n * n) return;
+
+	if (!isSafe(i, j, n, visited)) return;
+
+	int dirX[] = { -1, -1, -2, -2, 1,  1, 2, 2};
+	int dirY[] = {2,  -2, 1,  -1, 2, -2, 1, -1};
+
+	visited[i][j] = 1;
+	grid[i][j] = count;
+
+	// explore all next moves from here
+
+	for (int k = 0; k < 8; ++k)
 	{
-		swap(vec[i], vec[indx]);
-
-		f(vec, n, indx + 1, s + vec[indx]);
-
-		swap(vec[i], vec[indx]);
+		if (isSafe(i + dirX[k], j + dirY[k], n, visited)) {
+			knightsTour(grid, i + dirX[k], j + dirY[k], n, count + 1, visited);
+		}
 	}
+	grid[i][j] = 0;
+	visited[i][j] = 0;
+}
+
+void getKnightPaths(int n) {
+
+	vector<vector<int>> grid(n, vector<int>(n, 0));
+	vector<vector<bool>> visited(n, vector<bool>(n, 0));
+	knightsTour(grid, 0, 0, n, 0, visited);
 }
 
 
 void solve() {
-	// solve here....
+	// solve here...
 
 	int n;
 	cin >> n;
 
-	vector<string> vec(n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
-
-	debug(vec)
-
-	f(vec, n, 0, "");
-
+	getKnightPaths(n);
 
 }
 int main()

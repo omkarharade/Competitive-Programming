@@ -83,22 +83,68 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
+int cnt = 0;
 
-	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
+void display(vector<vector<bool>> &grid, int n) {
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			if (grid[i][j]) cout << "Q ";
+			else cout << ". ";
 		}
+		cout << nline;
+	}
+}
+
+bool isSafe(vector<vector<bool>> &grid, int row, int column, int n) {
+
+
+
+	for (int i = 0; i < row; ++i)
+	{
+		if (grid[i][column]) {
+			return false;
+		}
+	}
+
+	for (int i = row - 1, j = column - 1; (i >= 0) and (j >= 0); --i, --j)
+	{
+		if (grid[i][j]) {
+			return false;
+		}
+	}
+
+	for (int i = row - 1, j = column + 1; (i >= 0) and (j < n); --i, ++j)
+	{
+		if (grid[i][j]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void countNQueen(vector<vector<bool>> &grid, int currRow, int n) {
+
+	if (currRow == n) {
+		cnt++;
+
+		cout << "case " << cnt << "\n\n";
+		display(grid, n);
+		cout << "\n\n";
 		return;
 	}
 
-	for (int i = indx; i < n; ++i)
+	for (int i = 0; i < n; ++i)
 	{
-		swap(vec[i], vec[indx]);
+		if (isSafe(grid, currRow, i, n)) {
 
-		f(vec, n, indx + 1, s + vec[indx]);
-
-		swap(vec[i], vec[indx]);
+			grid[currRow][i] = 1;
+			countNQueen(grid, currRow + 1,	 n);
+			grid[currRow][i] = 0;
+		}
 	}
 }
 
@@ -109,18 +155,9 @@ void solve() {
 	int n;
 	cin >> n;
 
-	vector<string> vec(n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
-
-	debug(vec)
-
-	f(vec, n, 0, "");
-
-
+	vector<vector<bool>> grid(n, vector<bool>(n, 0));
+	countNQueen(grid, 0, n);
+	cout << "total = " << cnt << nline;
 }
 int main()
 {

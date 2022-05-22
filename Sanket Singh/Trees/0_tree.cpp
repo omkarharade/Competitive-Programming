@@ -83,42 +83,76 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
 
-	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
-		}
-		return;
+
+
+struct node {
+
+	int data;
+	node* left;
+	node* right;
+
+	node(int n) {
+		data = n;
+		left = NULL;
+		right = NULL;
 	}
+};
 
-	for (int i = indx; i < n; ++i)
-	{
-		swap(vec[i], vec[indx]);
+node *build() {
 
-		f(vec, n, indx + 1, s + vec[indx]);
+	int d;
+	cin >> d;
 
-		swap(vec[i], vec[indx]);
-	}
+	if (d == -1) return NULL;
+
+	node* root = new node(d);
+	root -> left = build();
+	root -> right = build();
+
+	return root;
+}
+
+void preOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	cout << root -> data << " ";
+	preOrderTraversal(root -> left);
+	preOrderTraversal(root -> right);
+}
+
+void inOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	inOrderTraversal(root -> left);
+	cout << root -> data << " ";
+	inOrderTraversal(root -> right);
+}
+
+void postOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	postOrderTraversal(root -> left);
+	postOrderTraversal(root -> right);
+	cout << root -> data << " ";
 }
 
 
 void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
+	node *root = build();
 
-	vector<string> vec(n);
+	preOrderTraversal(root);
+	cout << nline;
+	inOrderTraversal(root);
+	cout << nline;
+	postOrderTraversal(root);
+	cout << nline;
 
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
-
-	debug(vec)
-
-	f(vec, n, 0, "");
 
 
 }
@@ -146,3 +180,5 @@ int main()
 	}
 	return 0;
 }
+
+// 1 2 4 -1 -1 5 -1 8 -1 -1 3 6 -1 9 -1 -1 7 -1 -1

@@ -83,24 +83,36 @@ void IO(string s) {
 	}
 }
 
-ll N = 1e3 + 5;
-ll mod = 998244353;
-vector<ll> fact(N);
+void f(vector<string> &vec, int n, int indx, string s) {
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+
+			cout << vec[i] + vec[j] << nline;
+		}
+	}
+}
+
 
 void solve() {
 	// solve here....
 
-	ll n;
+	int n;
 	cin >> n;
 
-	if (n % 2 != 0) {
-		cout << 0 << nline;
-		return;
+	vector<string> vec(n);
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> vec[i];
 	}
 
-	ll f = n / 2;
+	debug(vec)
 
-	cout << ((fact[f] % mod) * (fact[f] % mod)) % mod << nline;
+	f(vec, n, 0, "");
+
 
 }
 int main()
@@ -110,15 +122,7 @@ int main()
 	IO("");
 	// Write your code here....
 
-
-	fact[0] = 1;
-	for (int i = 1; i < N; ++i)
-	{
-		fact[i] = ((i % mod) * (fact[i - 1] % mod) ) % mod;
-	}
-
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{

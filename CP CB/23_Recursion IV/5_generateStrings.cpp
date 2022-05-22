@@ -39,6 +39,7 @@ void generateStrings(string input, int i, int n, string output) {
 }
 
 
+
 int main() {
 #ifndef ONLINE_JUDGE
 	freopen("error.txt", "w", stderr);

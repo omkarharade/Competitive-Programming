@@ -83,23 +83,53 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
+int totalPaths = 0;
 
-	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
-		}
+bool isSafe(int i, int j, int n, vector<vector<bool>> &visited) {
+
+	return (i >= 0) and (j >= 0) and (i < n) and (j < n) and (visited[i][j] == false);
+}
+
+
+void helper(int i, int j, int n, vector<vector<int>> &grid, vector<vector<bool>> &visited ) {
+
+	if ((i == n - 1) and (j == n - 1)) {
+		totalPaths++;
 		return;
 	}
 
-	for (int i = indx; i < n; ++i)
-	{
-		swap(vec[i], vec[indx]);
+	// pruning
+	if (!isSafe( i,  j,  n, visited)) return;
 
-		f(vec, n, indx + 1, s + vec[indx]);
+	visited[i][j] = 1;
 
-		swap(vec[i], vec[indx]);
+	if ((i + 1 < n) and grid[i + 1][j] == 0) {
+		helper(i + 1, j, n, grid, visited);
 	}
+
+	if ((i - 1 >= 0) and grid[i - 1][j] == 0) {
+		helper(i - 1, j, n, grid, visited);
+	}
+
+	if ((j + 1 < n) and grid[i][j + 1] == 0) {
+		helper(i, j + 1, n, grid, visited);
+	}
+
+	if ((j - 1 >= 0) and grid[i][j - 1] == 0) {
+		helper(i, j - 1, n, grid, visited);
+	}
+
+	visited[i][j] = 0;
+
+}
+
+void countRatMazePaths(vector<vector<int>> &grid) {
+
+	int n = grid.size();
+	vector<vector<bool>> visited(n, vector<bool>(n, 0));
+
+	helper(0, 0, n, grid, visited);
+	cout << totalPaths << nline;
 }
 
 
@@ -109,19 +139,20 @@ void solve() {
 	int n;
 	cin >> n;
 
-	vector<string> vec(n);
+	vector<vector<int>> grid(n, vector<int>(n));
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
+		for (int j = 0; j < n; ++j)
+		{
+			cin >> grid[i][j];
+		}
 	}
 
-	debug(vec)
-
-	f(vec, n, 0, "");
-
-
+	countRatMazePaths(grid);
 }
+
+
 int main()
 {
 	clock_t begin = clock();
@@ -130,6 +161,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
@@ -146,3 +178,22 @@ int main()
 	}
 	return 0;
 }
+
+
+
+/*
+
+sample input:
+7
+0 0 1 0 0 1 0
+1 0 1 1 0 0 0
+0 0 0 0 1 0 1
+1 0 1 0 0 0 0
+1 0 1 1 0 1 0
+1 0 0 0 0 1 0
+1 1 1 1 0 0 0
+
+sample output:
+4
+
+*/

@@ -83,25 +83,31 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
+void subsetFinder(vector<int> &arr, int i, int n, vector<int> &temp) {
 
-	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
+
+	if (i == n) {
+
+		if (temp.size() > 0) {
+			for (int i = 0; i < temp.size(); ++i)
+			{
+				cout << temp[i] << " ";
+			}
+			cout << nline;
 		}
+
 		return;
 	}
 
-	for (int i = indx; i < n; ++i)
-	{
-		swap(vec[i], vec[indx]);
+	// select the element
+	temp.pb(arr[i]);
+	subsetFinder(arr, i + 1, n, temp);
+	temp.ppb();
 
-		f(vec, n, indx + 1, s + vec[indx]);
+	// don't select the item
+	subsetFinder(arr, i + 1, n, temp);
 
-		swap(vec[i], vec[indx]);
-	}
 }
-
 
 void solve() {
 	// solve here....
@@ -109,17 +115,16 @@ void solve() {
 	int n;
 	cin >> n;
 
-	vector<string> vec(n);
+	vector<int> arr(n);
 
 	for (int i = 0; i < n; ++i)
 	{
-		cin >> vec[i];
+		cin >> arr[i];
 	}
+	debug(arr)
 
-	debug(vec)
-
-	f(vec, n, 0, "");
-
+	vector<int> temp;
+	subsetFinder(arr, 0, n, temp);
 
 }
 int main()

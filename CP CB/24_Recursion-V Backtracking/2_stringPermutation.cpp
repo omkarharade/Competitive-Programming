@@ -83,43 +83,28 @@ void IO(string s) {
 	}
 }
 
-void f(vector<string> &vec, int n, int indx, string s) {
+void stringPermutation(string &s, int indx, int n) {
 
 	if (indx == n) {
-		if (s.length() == (vec.size() * vec[0].length())) {
-			cout << s << nline;
-		}
+		cout << s << nline;
 		return;
 	}
 
 	for (int i = indx; i < n; ++i)
 	{
-		swap(vec[i], vec[indx]);
-
-		f(vec, n, indx + 1, s + vec[indx]);
-
-		swap(vec[i], vec[indx]);
+		swap(s[indx], s[i]);
+		stringPermutation(s, indx + 1, n);
+		swap(s[indx], s[i]);
 	}
 }
 
-
 void solve() {
-	// solve here....
+	// solve here...
 
-	int n;
-	cin >> n;
+	string s;
+	cin >> s;
 
-	vector<string> vec(n);
-
-	for (int i = 0; i < n; ++i)
-	{
-		cin >> vec[i];
-	}
-
-	debug(vec)
-
-	f(vec, n, 0, "");
-
+	stringPermutation(s, 0, s.length());
 
 }
 int main()
@@ -146,3 +131,18 @@ int main()
 	}
 	return 0;
 }
+
+/*
+
+sample input:
+abc
+
+sample output:
+abc
+acb
+bac
+bca
+cba
+cab
+
+*/
