@@ -61,45 +61,93 @@ void file_i_o()
 #endif
 }
 
-const int N = 1e5+10;
-const int inf = 1e9 + 10;
+/*
 
-vector<pair<int,int>> g[N];
-void dijkstra(int source){
+input 
 
-	vector<bool> vis(N, 0);
-	vector<int> dist(N, inf);
+2
 
-	set<pair<int, int>> st;
+3
+0 1 -1
+1 2 -2
+2 0 3
 
-	st.insert({0, source});
-	
-	dist[source] = 0;
+3
+0 1 -1
+1 2 -2
+2 0 -3
 
-	while(st.size() > 0){
-		auto node = *st.begin();
-		st.erase(st.begin());
-		int v = node.ss;
-		int v_dist = node.ff;
 
-		if(vis[v]) continue;
-		vis[v] = 1;
+*/
 
-		for(auto child: g[v]){
-			int child_v = child.ff;
-			int wt = child.ss;
+int N = 2510;
+vector<ll> dist(N, 1e18);
 
-			if(dist[v] + wt < dist[child_v]){
-				dist[child_v] = dist[v] + wt;
-				st.insert({dist[child_v], child_v});
-			}
-		}
+void init(int n){
+
+	for (int i = 0; i < n; ++i)
+	{
+		dist[i] = 1e18;
 	}
 }
 
 void solve(){
 	// solve here....
 
+	int n;
+	cin >> n;
+
+	init(n);
+
+	vector<vector<ll>> edges(n, vector<ll>(3));
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> edges[i][0] >> edges[i][1] >> edges[i][2];
+	}
+
+	// let the source be 0
+	dist[0] = 0;
+
+	// n-1 relaxations
+	for (int i = 1; i < n; ++i)
+	{
+		for (int j = 0; j < edges.size(); ++j)
+		{
+			ll src = edges[j][0];
+			ll dest = edges[j][1];
+			ll wt = edges[j][2];
+
+			if(dist[src] != 1e18 and dist[src] + wt < dist[dest]){
+				dist[dest] = dist[src] + wt;
+			}
+		}
+	}
+
+	bool negCyclePresent = 0;
+
+	for (int j = 0; j < edges.size(); ++j)
+	{
+		ll src = edges[j][0];
+		ll dest = edges[j][1];
+		ll wt = edges[j][2];
+
+		if(dist[src] != 1e18 and dist[src] + wt < dist[dest]){
+			negCyclePresent = 1;
+			break;
+		}
+	}
+
+	if(negCyclePresent){
+		cout << -1 << nline;
+	}
+	else{
+		for (int i = 0; i < n; ++i)
+		{
+			cout << dist[i] << " ";
+		}
+		cout << nline;
+	}
 
 }
 

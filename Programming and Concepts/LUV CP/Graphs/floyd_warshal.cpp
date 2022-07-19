@@ -61,46 +61,107 @@ void file_i_o()
 #endif
 }
 
-const int N = 1e5+10;
-const int inf = 1e9 + 10;
+//////////////////////////////////////////////////////////////////////////////////////
 
-vector<pair<int,int>> g[N];
-void dijkstra(int source){
+/* 
 
-	vector<bool> vis(N, 0);
-	vector<int> dist(N, inf);
+There are n cities and m roads between them.
+Your task is to process q queries where you have to determine the length of the shortest
+ route between two given cities.
 
-	set<pair<int, int>> st;
+Input
 
-	st.insert({0, source});
-	
-	dist[source] = 0;
+The first input line has three integers n, m and q:
+the number of cities, roads, and queries.
 
-	while(st.size() > 0){
-		auto node = *st.begin();
-		st.erase(st.begin());
-		int v = node.ss;
-		int v_dist = node.ff;
+Then, there are m lines describing the roads. Each line has three integers
+a, b and c: there is a road between cities a and b whose length is c. 
+All roads are two-way roads.
 
-		if(vis[v]) continue;
-		vis[v] = 1;
+Finally, there are q lines describing the queries. 
+Each line has two integers a and b: determine the length of the shortest route between cities a and b.
 
-		for(auto child: g[v]){
-			int child_v = child.ff;
-			int wt = child.ss;
+Output
 
-			if(dist[v] + wt < dist[child_v]){
-				dist[child_v] = dist[v] + wt;
-				st.insert({dist[child_v], child_v});
-			}
-		}
-	}
-}
+Print the length of the shortest route for each query. If there is no route, print −1 instead.
+
+Constraints
+1≤n≤500
+1≤m≤n2
+1≤q≤105
+1≤a,b≤n
+1≤c≤109
+Example
+
+Input:
+4 3 5
+1 2 5
+1 3 9
+2 3 3
+1 2
+2 1
+1 3
+1 4
+3 2
+
+Output:
+5
+5
+8
+-1
+3
+
+
+*/
+const int N = 510;
+ll dist[N][N];
 
 void solve(){
 	// solve here....
 
+	int n, m, q;
+	cin >> n >> m >> q;
 
+	for (int i = 0; i < 510; ++i)
+	{
+		for (int j = 0; j < 510; ++j)
+		{
+			if(i == j){
+				dist[i][j] = 0;
+			}
+			else dist[i][j] = 1e18;
+		}
+	}
+
+	for (int i = 0; i < m; ++i)
+	{
+		int v1, v2, wt;
+		cin >> v1 >> v2 >> wt;
+		dist[v1][v2] = min(dist[v1][v2], 1LL*wt);	
+		dist[v2][v1] = min(dist[v1][v2], 1LL*wt);	
+	}
+
+	for (int k = 1; k <= n ; ++k)
+	{
+		for (int i = 1; i <= n ; ++i)
+		{
+			for (int j = 1; j <= n ; ++j)
+			{
+				if(dist[i][k] != 1e18 and dist[k][j] != 1e18)
+					dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+			}
+		}
+	}
+
+
+	while(q--){
+
+		int v1, v2;
+		cin >> v1 >> v2;
+
+		if(dist[v1][v2] == 1e18) cout << -1 << nline;
+		else cout << dist[v1][v2] << nline;
+	}
 }
 
 int main()
@@ -110,7 +171,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
