@@ -68,6 +68,23 @@ vector<vector<char>> vec(N, vector<char>(N, '.'));
 vector<vector<bool>> vis(N, vector<bool>(N, false));
 vector<vector<int>> dp(N, vector<int>(N, -1));
 
+bool usaco = false;
+
+void IO(string s) {
+	fastIO
+	if (s.empty()) {
+#ifndef ONLINE_JUDGE
+		freopen("error.txt", "w", stderr);
+#endif
+	}
+	else {
+		usaco = true;
+		freopen((s + ".in").c_str(), "r", stdin);
+		freopen((s + ".out").c_str(), "w", stdout);
+	}
+}
+
+void f(string &s, int n, int i) {
 
 // boundary checks 
 

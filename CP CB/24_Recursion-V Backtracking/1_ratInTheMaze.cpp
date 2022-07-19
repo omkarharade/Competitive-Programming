@@ -83,33 +83,53 @@ void IO(string s) {
 	}
 }
 
-const int N = 1e5 + 10;
-int vis[N];
-vector<int> g[N];
-int level[N];
+int totalPaths = 0;
+
+bool isSafe(int i, int j, int n, vector<vector<bool>> &visited) {
+
+	return (i >= 0) and (j >= 0) and (i < n) and (j < n) and (visited[i][j] == false);
+}
 
 
-void bfs(int source) {
-	queue<int> q;
-	q.push(source);
-	vis[source] = 1;
+void helper(int i, int j, int n, vector<vector<int>> &grid, vector<vector<bool>> &visited ) {
 
-
-	while (!q.empty()) {
-		int currVertx = q.front();
-		q.pop();
-
-		cout << currVertx << " ";
-
-		for (int child : g[currVertx]) {
-			if (!vis[child]) {
-				q.push(child);
-				vis[child] = 1;
-				level[child] = level[currVertx] + 1;
-			}
-		}
+	if ((i == n - 1) and (j == n - 1)) {
+		totalPaths++;
+		return;
 	}
-	cout << nline;
+
+	// pruning
+	if (!isSafe( i,  j,  n, visited)) return;
+
+	visited[i][j] = 1;
+
+	if ((i + 1 < n) and grid[i + 1][j] == 0) {
+		helper(i + 1, j, n, grid, visited);
+	}
+
+	if ((i - 1 >= 0) and grid[i - 1][j] == 0) {
+		helper(i - 1, j, n, grid, visited);
+	}
+
+	if ((j + 1 < n) and grid[i][j + 1] == 0) {
+		helper(i, j + 1, n, grid, visited);
+	}
+
+	if ((j - 1 >= 0) and grid[i][j - 1] == 0) {
+		helper(i, j - 1, n, grid, visited);
+	}
+
+	visited[i][j] = 0;
+
+}
+
+void countRatMazePaths(vector<vector<int>> &grid) {
+
+	int n = grid.size();
+	vector<vector<bool>> visited(n, vector<bool>(n, 0));
+
+	helper(0, 0, n, grid, visited);
+	cout << totalPaths << nline;
 }
 
 
@@ -119,24 +139,20 @@ void solve() {
 	int n;
 	cin >> n;
 
-	for (int i = 0; i < n - 1; ++i)
+	vector<vector<int>> grid(n, vector<int>(n));
+
+	for (int i = 0; i < n; ++i)
 	{
-		int x, y;
-		cin >> x >> y;
-		g[x].pb(y);
-		g[y].pb(x);
+		for (int j = 0; j < n; ++j)
+		{
+			cin >> grid[i][j];
+		}
 	}
 
-
-
-	bfs(1);
-
-	for (int i = 1; i <= n; i++) {
-		cout << i << ": " << level[i] << nline;
-	}
-
-
+	countRatMazePaths(grid);
 }
+
+
 int main()
 {
 	clock_t begin = clock();
@@ -145,6 +161,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
+	// cin >> t;
 
 	while (t-- > 0)
 	{
@@ -161,3 +178,22 @@ int main()
 	}
 	return 0;
 }
+
+
+
+/*
+
+sample input:
+7
+0 0 1 0 0 1 0
+1 0 1 1 0 0 0
+0 0 0 0 1 0 1
+1 0 1 0 0 0 0
+1 0 1 1 0 1 0
+1 0 0 0 0 1 0
+1 1 1 1 0 0 0
+
+sample output:
+4
+
+*/

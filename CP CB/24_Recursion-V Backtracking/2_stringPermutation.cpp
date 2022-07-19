@@ -83,58 +83,28 @@ void IO(string s) {
 	}
 }
 
-const int N = 1e5 + 10;
-int vis[N];
-vector<int> g[N];
-int level[N];
+void stringPermutation(string &s, int indx, int n) {
 
-
-void bfs(int source) {
-	queue<int> q;
-	q.push(source);
-	vis[source] = 1;
-
-
-	while (!q.empty()) {
-		int currVertx = q.front();
-		q.pop();
-
-		cout << currVertx << " ";
-
-		for (int child : g[currVertx]) {
-			if (!vis[child]) {
-				q.push(child);
-				vis[child] = 1;
-				level[child] = level[currVertx] + 1;
-			}
-		}
+	if (indx == n) {
+		cout << s << nline;
+		return;
 	}
-	cout << nline;
+
+	for (int i = indx; i < n; ++i)
+	{
+		swap(s[indx], s[i]);
+		stringPermutation(s, indx + 1, n);
+		swap(s[indx], s[i]);
+	}
 }
 
-
 void solve() {
-	// solve here....
+	// solve here...
 
-	int n;
-	cin >> n;
+	string s;
+	cin >> s;
 
-	for (int i = 0; i < n - 1; ++i)
-	{
-		int x, y;
-		cin >> x >> y;
-		g[x].pb(y);
-		g[y].pb(x);
-	}
-
-
-
-	bfs(1);
-
-	for (int i = 1; i <= n; i++) {
-		cout << i << ": " << level[i] << nline;
-	}
-
+	stringPermutation(s, 0, s.length());
 
 }
 int main()
@@ -161,3 +131,18 @@ int main()
 	}
 	return 0;
 }
+
+/*
+
+sample input:
+abc
+
+sample output:
+abc
+acb
+bac
+bca
+cba
+cab
+
+*/

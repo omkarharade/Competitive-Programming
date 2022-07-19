@@ -83,33 +83,69 @@ void IO(string s) {
 	}
 }
 
-const int N = 1e5 + 10;
-int vis[N];
-vector<int> g[N];
-int level[N];
+int cnt = 0;
+
+void display(vector<vector<bool>> &grid, int n) {
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			if (grid[i][j]) cout << "Q ";
+			else cout << ". ";
+		}
+		cout << nline;
+	}
+}
+
+bool isSafe(vector<vector<bool>> &grid, int row, int column, int n) {
 
 
-void bfs(int source) {
-	queue<int> q;
-	q.push(source);
-	vis[source] = 1;
 
-
-	while (!q.empty()) {
-		int currVertx = q.front();
-		q.pop();
-
-		cout << currVertx << " ";
-
-		for (int child : g[currVertx]) {
-			if (!vis[child]) {
-				q.push(child);
-				vis[child] = 1;
-				level[child] = level[currVertx] + 1;
-			}
+	for (int i = 0; i < row; ++i)
+	{
+		if (grid[i][column]) {
+			return false;
 		}
 	}
-	cout << nline;
+
+	for (int i = row - 1, j = column - 1; (i >= 0) and (j >= 0); --i, --j)
+	{
+		if (grid[i][j]) {
+			return false;
+		}
+	}
+
+	for (int i = row - 1, j = column + 1; (i >= 0) and (j < n); --i, ++j)
+	{
+		if (grid[i][j]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+void countNQueen(vector<vector<bool>> &grid, int currRow, int n) {
+
+	if (currRow == n) {
+		cnt++;
+
+		cout << "case " << cnt << "\n\n";
+		display(grid, n);
+		cout << "\n\n";
+		return;
+	}
+
+	for (int i = 0; i < n; ++i)
+	{
+		if (isSafe(grid, currRow, i, n)) {
+
+			grid[currRow][i] = 1;
+			countNQueen(grid, currRow + 1,	 n);
+			grid[currRow][i] = 0;
+		}
+	}
 }
 
 
@@ -119,23 +155,9 @@ void solve() {
 	int n;
 	cin >> n;
 
-	for (int i = 0; i < n - 1; ++i)
-	{
-		int x, y;
-		cin >> x >> y;
-		g[x].pb(y);
-		g[y].pb(x);
-	}
-
-
-
-	bfs(1);
-
-	for (int i = 1; i <= n; i++) {
-		cout << i << ": " << level[i] << nline;
-	}
-
-
+	vector<vector<bool>> grid(n, vector<bool>(n, 0));
+	countNQueen(grid, 0, n);
+	cout << "total = " << cnt << nline;
 }
 int main()
 {

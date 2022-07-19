@@ -83,35 +83,31 @@ void IO(string s) {
 	}
 }
 
-const int N = 1e5 + 10;
-int vis[N];
-vector<int> g[N];
-int level[N];
+void subsetFinder(vector<int> &arr, int i, int n, vector<int> &temp) {
 
 
-void bfs(int source) {
-	queue<int> q;
-	q.push(source);
-	vis[source] = 1;
+	if (i == n) {
 
-
-	while (!q.empty()) {
-		int currVertx = q.front();
-		q.pop();
-
-		cout << currVertx << " ";
-
-		for (int child : g[currVertx]) {
-			if (!vis[child]) {
-				q.push(child);
-				vis[child] = 1;
-				level[child] = level[currVertx] + 1;
+		if (temp.size() > 0) {
+			for (int i = 0; i < temp.size(); ++i)
+			{
+				cout << temp[i] << " ";
 			}
+			cout << nline;
 		}
-	}
-	cout << nline;
-}
 
+		return;
+	}
+
+	// select the element
+	temp.pb(arr[i]);
+	subsetFinder(arr, i + 1, n, temp);
+	temp.ppb();
+
+	// don't select the item
+	subsetFinder(arr, i + 1, n, temp);
+
+}
 
 void solve() {
 	// solve here....
@@ -119,22 +115,16 @@ void solve() {
 	int n;
 	cin >> n;
 
-	for (int i = 0; i < n - 1; ++i)
+	vector<int> arr(n);
+
+	for (int i = 0; i < n; ++i)
 	{
-		int x, y;
-		cin >> x >> y;
-		g[x].pb(y);
-		g[y].pb(x);
+		cin >> arr[i];
 	}
+	debug(arr)
 
-
-
-	bfs(1);
-
-	for (int i = 1; i <= n; i++) {
-		cout << i << ": " << level[i] << nline;
-	}
-
+	vector<int> temp;
+	subsetFinder(arr, 0, n, temp);
 
 }
 int main()

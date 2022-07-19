@@ -83,57 +83,76 @@ void IO(string s) {
 	}
 }
 
-const int N = 1e5 + 10;
-int vis[N];
-vector<int> g[N];
-int level[N];
 
 
-void bfs(int source) {
-	queue<int> q;
-	q.push(source);
-	vis[source] = 1;
 
+struct node {
 
-	while (!q.empty()) {
-		int currVertx = q.front();
-		q.pop();
+	int data;
+	node* left;
+	node* right;
 
-		cout << currVertx << " ";
-
-		for (int child : g[currVertx]) {
-			if (!vis[child]) {
-				q.push(child);
-				vis[child] = 1;
-				level[child] = level[currVertx] + 1;
-			}
-		}
+	node(int n) {
+		data = n;
+		left = NULL;
+		right = NULL;
 	}
-	cout << nline;
+};
+
+node *build() {
+
+	int d;
+	cin >> d;
+
+	if (d == -1) return NULL;
+
+	node* root = new node(d);
+	root -> left = build();
+	root -> right = build();
+
+	return root;
+}
+
+void preOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	cout << root -> data << " ";
+	preOrderTraversal(root -> left);
+	preOrderTraversal(root -> right);
+}
+
+void inOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	inOrderTraversal(root -> left);
+	cout << root -> data << " ";
+	inOrderTraversal(root -> right);
+}
+
+void postOrderTraversal(node *root) {
+
+	if (root == NULL) return;
+
+	postOrderTraversal(root -> left);
+	postOrderTraversal(root -> right);
+	cout << root -> data << " ";
 }
 
 
 void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
+	node *root = build();
 
-	for (int i = 0; i < n - 1; ++i)
-	{
-		int x, y;
-		cin >> x >> y;
-		g[x].pb(y);
-		g[y].pb(x);
-	}
+	preOrderTraversal(root);
+	cout << nline;
+	inOrderTraversal(root);
+	cout << nline;
+	postOrderTraversal(root);
+	cout << nline;
 
-
-
-	bfs(1);
-
-	for (int i = 1; i <= n; i++) {
-		cout << i << ": " << level[i] << nline;
-	}
 
 
 }
@@ -161,3 +180,5 @@ int main()
 	}
 	return 0;
 }
+
+// 1 2 4 -1 -1 5 -1 8 -1 -1 3 6 -1 9 -1 -1 7 -1 -1
