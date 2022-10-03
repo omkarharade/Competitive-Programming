@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -22,6 +20,7 @@ typedef unsigned long long ull;
 typedef long double lld;
 typedef vector<long long> vll;
 typedef vector<int> vi;
+typedef pair<int, int> pii;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
 #ifndef ONLINE_JUDGE
@@ -54,15 +53,15 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 
- 
+
 template<typename T1, typename T2> // cin >> pair<T1, T2>
-istream& operator>>(istream &in, pair<T1, T2> &p){ return (in >> p.first >> p.second);}
+istream& operator>>(istream &in, pair<T1, T2> &p) { return (in >> p.first >> p.second);}
 template<typename T> // cin >> vector<T>
-istream& operator>>(istream &in, vector<T> &v){for(auto &it: v) cin >> it; return in;}
+istream& operator>>(istream &in, vector<T> &v) {for (auto &it : v) cin >> it; return in;}
 template<typename T1, typename T2> // cout << pair<T1, T2>
-ostream& operator<<(ostream &out, const pair<T1, T2> &p){return (out << p.first << " " << p.second); }
+ostream& operator<<(ostream &out, const pair<T1, T2> &p) {return (out << p.first << " " << p.second); }
 template<typename T> //cout << vector<T>
-ostream& operator<<(ostream &out, const vector<T> &c){for (auto &it: c) cout << it << " "; return out;}
+ostream& operator<<(ostream &out, const vector<T> &c) {for (auto &it : c) cout << it << " "; return out;}
 
 
 void file_i_o()
@@ -75,10 +74,89 @@ void file_i_o()
 #endif
 }
 
-void solve(){
+bool cmp(pii a, pii b) {
+
+	if (a.ff == b.ff) {
+		return a.ss > b.ss;
+	}
+
+	return a.ff < b.ff;
+}
+
+void update(vi &lis, vi &segTree, int s, int e, int tIdx, int i, ll v) {
+
+	if (s == e) {
+		lis[i] = v;
+		segTree[tIdx] = v;
+		return;
+	}
+
+	ll mid = s + (e - s) / 2;
+
+	if (i > mid) {
+		update(lis, segTree, mid + 1, e, 2 * tIdx + 1, i, v);
+	}
+	else {
+		update(lis, segTree, s, mid, 2 * tIdx, i, v);
+	}
+
+	segTree[tIdx] = max(segTree[2 * tIdx] , segTree[2 * tIdx + 1]);
+}
+
+ll query(vi &segTree, int s, int e, int tIdx, ll l, ll r) {
+
+	if (r < s or l > e) return 0;
+	if (s >= l and  e <= r) return segTree[tIdx];
+
+	ll mid = s + (e - s) / 2;
+
+	ll left = query(segTree, s, mid, 2 * tIdx, l, r);
+	ll right = query(segTree, mid + 1, e, 2 * tIdx + 1, l, r);
+
+	return max(left, right);
+}
+
+void solve() {
 	// solve here....
 
-	
+	int n;
+	cin >> n;
+
+	vector<pii> arr(n);
+
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> arr[i].ff;
+		arr[i].ss = i;
+	}
+
+	sort(all(arr), cmp);
+
+	vi segTree(4 * n, 0);
+	vi lis(n, 0);
+
+	for (int i = 0; i < n; ++i)
+	{
+		ll element = arr[i].ff;
+		int index = arr[i].ss;
+
+		debug(element)
+		debug(index)
+
+		ll res = query(segTree, 0, n - 1, 1, 0, index - 1);
+		update(lis, segTree, 0, n - 1, 1, index, res + 1);
+	}
+
+	ll max_el = -1e18;
+
+	for (int i = 0; i < n; ++i)
+	{
+		max_el = max(max_el, lis[i] * 1LL);
+	}
+
+	cout << max_el << nline;
+
 }
 
 int main()
@@ -88,7 +166,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
@@ -101,9 +178,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>

@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -54,15 +52,15 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 
- 
+
 template<typename T1, typename T2> // cin >> pair<T1, T2>
-istream& operator>>(istream &in, pair<T1, T2> &p){ return (in >> p.first >> p.second);}
+istream& operator>>(istream &in, pair<T1, T2> &p) { return (in >> p.first >> p.second);}
 template<typename T> // cin >> vector<T>
-istream& operator>>(istream &in, vector<T> &v){for(auto &it: v) cin >> it; return in;}
+istream& operator>>(istream &in, vector<T> &v) {for (auto &it : v) cin >> it; return in;}
 template<typename T1, typename T2> // cout << pair<T1, T2>
-ostream& operator<<(ostream &out, const pair<T1, T2> &p){return (out << p.first << " " << p.second); }
+ostream& operator<<(ostream &out, const pair<T1, T2> &p) {return (out << p.first << " " << p.second); }
 template<typename T> //cout << vector<T>
-ostream& operator<<(ostream &out, const vector<T> &c){for (auto &it: c) cout << it << " "; return out;}
+ostream& operator<<(ostream &out, const vector<T> &c) {for (auto &it : c) cout << it << " "; return out;}
 
 
 void file_i_o()
@@ -75,10 +73,108 @@ void file_i_o()
 #endif
 }
 
-void solve(){
+// tIdx -> tree Index
+
+void build(vector<int> &vec, vector<int> &segTree, int s, int e, int tIdx) {
+
+	// base case
+
+	if (s == e) {
+		segTree[tIdx] = vec[s];
+		return;
+	}
+
+	int mid = (s + e) / 2;
+
+	build(vec, segTree, s, mid, 2 * tIdx);
+	build(vec, segTree, mid + 1, e, 2 * tIdx + 1);
+
+	segTree[tIdx] = segTree[2 * tIdx] + segTree[2 * tIdx + 1];
+}
+
+void update(vector<int> &vec, vector<int> &segTree, int s, int e, int tIdx, int idx, int val) {
+
+
+	if (s == e) {
+
+		vec[idx] = val;
+		segTree[tIdx] = val;
+		return;
+	}
+	int mid = (s + e) / 2;
+
+	if (idx > mid) {
+		update(vec, segTree, mid + 1, e, 2 * tIdx + 1, idx, val);
+	}
+	else {
+		update(vec, segTree, s, mid, 2 * tIdx, idx, val);
+	}
+
+	segTree[tIdx] = segTree[2 * tIdx] + segTree[2 * tIdx + 1];
+}
+
+
+int query(vector<int> &segTree, int s, int e, int tIdx, int left, int right) {
+
+	if (s > right or e < left) {
+		// completely outside
+		return 0;
+	}
+
+	if (s >= left and e <= right) {
+		return segTree[tIdx];
+	}
+
+	int mid = (s + e) / 2;
+
+	int a1 = query(segTree, s, mid, 2 * tIdx, left, right);
+	int a2 = query(segTree, mid + 1, e, 2 * tIdx + 1, left, right);
+
+	return a1 + a2;
+}
+
+void solve() {
 	// solve here....
 
-	
+	int n;
+	cin >> n;
+
+	vector<int> vec(n), segTree(4 * n);
+
+
+	for (int i = 0; i < n; ++i)
+	{
+		cin >> vec[i];
+	}
+
+	build(vec, segTree, 0, n - 1, 1);
+
+	int q;
+	cin >> q;
+
+	while (q--) {
+
+		int type;
+		cin >> type;
+
+		if (type == 1) {
+			int l, r;
+			cin >> l >> r;
+			cout << query(segTree, 0, n - 1, 1, l, r) << nline;
+		}
+		else {
+
+			int i, v;
+			cin >> i >> v;
+
+			update(vec, segTree, 0, n - 1, 1, i, v);
+		}
+
+	}
+
+
+
+
 }
 
 int main()
@@ -88,7 +184,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
@@ -101,9 +196,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>

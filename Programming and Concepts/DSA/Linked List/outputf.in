@@ -1,0 +1,9 @@
+12 -> 13 -> 14 -> 15 -> 16 -> 
+insert at End Process Completed
+insert at End Process Completed
+12 -> 13 -> 14 -> 15 -> 16 -> 100 -> 200 -> 
+insert at Begin Process Completed
+insert at Begin Process Completed
+insert at Begin Process Completed
+10 -> 600 -> 300 -> 12 -> 13 -> 14 -> 15 -> 16 -> 100 -> 200 -> 
+10 -> 600 -> 300 -> 12 -> 13 -> 14 -> 1000000 -> 15 -> 16 -> 100 -> 200 -> 

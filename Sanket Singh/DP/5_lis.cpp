@@ -63,6 +63,7 @@ void file_i_o()
 #endif
 }
 
+// f(i) = length of longest increasing subsequence ending at i
 // f(i) = 1 + max(f(i-j))  where j E (0, i-1) and a[i] > a[j]
 
 void solve() {
@@ -95,7 +96,6 @@ void solve() {
 	}
 
 	cout << ans << nline;
-
 
 }
 

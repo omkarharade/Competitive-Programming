@@ -18,6 +18,8 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
+typedef vector<long long> vll;
+typedef vector<int> vi;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
 #ifndef ONLINE_JUDGE
@@ -51,6 +53,16 @@ template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; f
 
 
 
+template<typename T1, typename T2> // cin >> pair<T1, T2>
+istream& operator>>(istream &in, pair<T1, T2> &p) { return (in >> p.first >> p.second);}
+template<typename T> // cin >> vector<T>
+istream& operator>>(istream &in, vector<T> &v) {for (auto &it : v) cin >> it; return in;}
+template<typename T1, typename T2> // cout << pair<T1, T2>
+ostream& operator<<(ostream &out, const pair<T1, T2> &p) {return (out << p.first << " " << p.second); }
+template<typename T> //cout << vector<T>
+ostream& operator<<(ostream &out, const vector<T> &c) {for (auto &it : c) cout << it << " "; return out;}
+
+
 void file_i_o()
 {
 	ios_base::sync_with_stdio(0);
@@ -61,117 +73,68 @@ void file_i_o()
 #endif
 }
 
-// variables declarations
-
-const int N = 1e3+10;
-vector<vector<char>> vec(N, vector<char>(N, '.'));
-vector<vector<bool>> vis(N, vector<bool>(N, false));
-vector<vector<int>> dp(N, vector<int>(N, -1));
-
-bool usaco = false;
-
-void IO(string s) {
-	fastIO
-	if (s.empty()) {
-#ifndef ONLINE_JUDGE
-		freopen("error.txt", "w", stderr);
-#endif
-	}
-	else {
-		usaco = true;
-		freopen((s + ".in").c_str(), "r", stdin);
-		freopen((s + ".out").c_str(), "w", stdout);
-	}
-}
-
-void f(string &s, int n, int i) {
-
-// boundary checks 
-
-bool isSafe(int x, int y, int n){
-
-	return x >= 0 and y >= 0 and x < n and  y < n;
-}
-
-// initializations 
-
-void init(int n){
-
-	for (int i = 0; i < n; ++i)
-	{
-		for (int j = 0; j < n; ++j)
-		{
-			vis[i][j] = 0;
-			dp[i][j] = -1;
-		}
-	}
-}
-
-// movements array
-
-vector<pair<int, int>> movements = {
-	{-1, 2}, {-2, 1}, {1, 2}, {2, 1}
-};
-
-// recursive fxn to get ans
-
-void getMaxEnemy(int x, int y, int n){
-
-	// base case
-	if(!isSafe(x, y, n)) return;
-	if(dp[x][y] != -1) return;
-	if (vis[x][y]) return;
-	//..........................................................
-
-
-	vis[x][y] = 1;
-
-	bool enemyPresent = 0;
-	int maxEnemy = 0;
-	if(vec[x][y] == 'P') enemyPresent = 1;
-
-
-	for (int i = 0; i < movements.size(); ++i)
-	{
-		int newX = x + movements[i].ff;
-		int newY = y + movements[i].ss;
-
-		if(!isSafe(newX, newY, n)) continue;
-
-		getMaxEnemy(newX, newY, n);
-		maxEnemy = max(maxEnemy, dp[newX][newY]);
-	}
-
-	dp[x][y] = maxEnemy + enemyPresent;
-	vis[x][y] = 0;
-}
-
-void solve(){
+void solve() {
 	// solve here....
 
-	int n;
-	cin >> n;
+	string s;
+	cin >> s;
+	int n = s.length();
+	multiset<char> mst;
 
-	init(n); // to be implemented
-	int xK = -1, yK = -1;
+	string sortedS = s;
+	sort(all(sortedS));
 
-	for (int i = 0; i < n; ++i)
+
+	for (int i = 0; i < s.length(); ++i)
 	{
-		for (int j = 0; j < n; ++j)
-		{
-			cin >> vec[i][j];
-
-			if(vec[i][j] == 'K'){
-				xK = i;
-				yK = j;
-			}
-		}
+		mst.insert(s[i]);
 	}
 
-	getMaxEnemy(xK, yK, n);
+	debug(mst)
 
-	cout << dp[xK][yK] << nline;
+	int currIndx = 0;
+	char currChar = *mst.begin();
+	mst.erase(mst.begin());
+
+	string ans;
+
+	while (currIndx < n ) {
+
+		if (s[currIndx] == currChar) {
+			ans.push_back(currChar);
+
+			if (mst.size() == 0) break;
+			currChar = *(mst.begin());
+			mst.erase(mst.begin());
+
+			currIndx++;
+		}
+		else currIndx++;
+	}
+
+	currIndx = ans.size();
+
+
+
+	// for (int i = currIndx; i < n; ++i)
+	// {
+	// 	if (sortedS[i] == currChar) {
+
+	// 		ans.pb(currChar);
+	// 	}
+	// 	else {
+	// 		ans.pb(char(min('9' + 0, currChar + 1)));
+	// 	}
+
+	// 	currChar = *mst.begin();
+	// 	mst.erase(mst.begin());
+	// }
+
+	cout << ans << nline;
+
+
 }
+
 
 int main()
 {

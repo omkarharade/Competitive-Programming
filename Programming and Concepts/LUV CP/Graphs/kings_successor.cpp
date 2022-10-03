@@ -1,5 +1,3 @@
-<snippet>
-	<content><![CDATA[
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -54,15 +52,15 @@ template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i
 template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 
- 
+
 template<typename T1, typename T2> // cin >> pair<T1, T2>
-istream& operator>>(istream &in, pair<T1, T2> &p){ return (in >> p.first >> p.second);}
+istream& operator>>(istream &in, pair<T1, T2> &p) { return (in >> p.first >> p.second);}
 template<typename T> // cin >> vector<T>
-istream& operator>>(istream &in, vector<T> &v){for(auto &it: v) cin >> it; return in;}
+istream& operator>>(istream &in, vector<T> &v) {for (auto &it : v) cin >> it; return in;}
 template<typename T1, typename T2> // cout << pair<T1, T2>
-ostream& operator<<(ostream &out, const pair<T1, T2> &p){return (out << p.first << " " << p.second); }
+ostream& operator<<(ostream &out, const pair<T1, T2> &p) {return (out << p.first << " " << p.second); }
 template<typename T> //cout << vector<T>
-ostream& operator<<(ostream &out, const vector<T> &c){for (auto &it: c) cout << it << " "; return out;}
+ostream& operator<<(ostream &out, const vector<T> &c) {for (auto &it : c) cout << it << " "; return out;}
 
 
 void file_i_o()
@@ -75,11 +73,110 @@ void file_i_o()
 #endif
 }
 
-void solve(){
+// ignore above codes.....
+
+const int N = 1e5 + 10;  // 1e5 = 1 * (10^5) 10 raised to 5
+vector<int> graph[N];
+
+// vector is basically dynamic array,
+// and array of vector is the above defined graph;
+
+int aliveSuccessor(vector<bool> &isAlive, int king) {
+
+	queue<int> q; // queue initialize
+	q.push(king); // push king
+
+	while (!q.empty()) {
+
+		// while loop runs till a successor is not found alive
+
+
+
+		// take the value from front of the queue and pop it from queue
+		int successor = q.front();
+		q.pop();
+
+
+		// if successor not alive , push its children
+
+		if (!isAlive[successor]) {
+
+			for (int child : graph[successor]) {
+
+				q.push(child);
+			}
+		}
+		else {
+			// if alive return directly
+			return successor;
+		}
+	}
+}
+
+void solve() {
 	// solve here....
 
-	
+	int n;
+	cin >> n;
+	debug(n)
+
+
+	/*
+
+	graph is globally decared so need to be cleared
+	if each testcase have a different graph, but it is
+	not required in our case as we use same graph for each testcase
+
+	*/
+
+	for (int i = 0; i <= n; ++i)
+	{
+		graph[i].clear();
+	}
+
+	int root = -1;
+
+
+	for (int i = 1; i <= n; i++) {
+
+		int parent;
+		cin >> parent;
+
+		graph[parent].push_back(i);
+
+		// we assume parent of root as 0 for simplicity
+		if (parent == 0) root = i;
+
+	}
+
+	int q;
+	cin >> q; // no. of queries
+
+	// isAlive array to check status of a person (alive 1 /dead 0)
+	vector<bool> isAlive(n + 1, 0); // n+1 size, 0 value to all initially.
+
+	while (q--) {
+
+		// creating isAlive array for each query
+
+		for (int i = 1; i <= n; ++i)
+		{
+			bool status;
+			cin >> status;
+
+			isAlive[i] = status;
+		}
+		debug(isAlive)
+
+		// calling the function aliveSuccessor and passing isAlive array and root
+
+		cout << aliveSuccessor(isAlive, root) << nline;
+	}
 }
+
+
+// ignore below code, can just call solve() function
+// or write the whole solve() function code directly in main() function
 
 int main()
 {
@@ -88,7 +185,6 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	cin >> t;
 
 	while (t-- > 0)
 	{
@@ -101,9 +197,3 @@ int main()
 #endif
 	return 0;
 }
-]]></content>
-	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
-	<tabTrigger>boiler_c++</tabTrigger>
-	<!-- Optional: Set a scope to limit where the snippet will trigger -->
-	<scope>source.c++</scope>
-</snippet>

@@ -18,6 +18,8 @@ using namespace std;
 typedef long long ll;
 typedef unsigned long long ull;
 typedef long double lld;
+typedef vector<long long> vll;
+typedef vector<int> vi;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
 #ifndef ONLINE_JUDGE
@@ -51,6 +53,16 @@ template <class T, class V> void _print(unordered_map <T, V> v) {cerr << "[ "; f
 
 
 
+template<typename T1, typename T2> // cin >> pair<T1, T2>
+istream& operator>>(istream &in, pair<T1, T2> &p) { return (in >> p.first >> p.second);}
+template<typename T> // cin >> vector<T>
+istream& operator>>(istream &in, vector<T> &v) {for (auto &it : v) cin >> it; return in;}
+template<typename T1, typename T2> // cout << pair<T1, T2>
+ostream& operator<<(ostream &out, const pair<T1, T2> &p) {return (out << p.first << " " << p.second); }
+template<typename T> //cout << vector<T>
+ostream& operator<<(ostream &out, const vector<T> &c) {for (auto &it : c) cout << it << " "; return out;}
+
+
 void file_i_o()
 {
 	ios_base::sync_with_stdio(0);
@@ -61,14 +73,41 @@ void file_i_o()
 #endif
 }
 
-void solve(){
+void solve() {
 	// solve here....
 
-	ll p = 873935277189052612;
-	ll q = 530795521;
+	ll n, k;
+	cin >> n >> k;
 
-	cout << p % q << nline;
-	cout << p / q << nline;
+	vector<ll> vec(k);
+	cin >> vec;
+
+	debug(vec)
+
+	ll currNum = INT_MIN;
+	bool ok = 1;
+
+	for (int i = k - 1; i - 1 >= 0; --i)
+	{
+		if (currNum == INT_MIN) currNum = vec[i] - vec[i - 1];
+		else {
+
+			debug(currNum)
+
+			ll num = vec[i] - vec[i - 1];
+
+			if (num <= currNum) {
+				currNum = num;
+			}
+			else {
+				ok = 0;
+				break;
+			}
+
+		}
+	}
+
+	cout << (ok ? "YES" : "NO") << nline;
 
 }
 
@@ -79,6 +118,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
+	cin >> t;
 
 	while (t-- > 0)
 	{
