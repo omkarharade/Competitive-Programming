@@ -15,6 +15,17 @@ struct Node {
 	}
 };
 
+void print(Node* head) {
+
+	Node* temp = head;
+
+	while (temp != NULL) {
+		cout << temp -> data << " -> ";
+		temp = temp -> next;
+	}
+	cout << nline;
+}
+
 Node* insert_begin(Node* head, int val) {
 
 	Node* newNode = new Node(val);
@@ -48,7 +59,7 @@ Node* insert_node_after_given_node(Node* head, int newVal, int nodeVal ) {
 
 	Node* temp = head;
 
-	while (temp -> next  != NULL and temp -> next -> data != nodeVal) {
+	while (temp -> next  != NULL and temp ->  data != nodeVal) {
 
 		temp = temp -> next;
 	}
@@ -61,16 +72,81 @@ Node* insert_node_after_given_node(Node* head, int newVal, int nodeVal ) {
 
 }
 
-void print(Node* head) {
+Node* insert_node_before_given_node(Node* head, int newVal, int nodeVal) {
 
 	Node* temp = head;
 
-	while (temp != NULL) {
-		cout << temp -> data << " -> ";
+	while (temp -> next  != NULL and temp -> next -> data != newVal) {
+
 		temp = temp -> next;
 	}
-	cout << nline;
+
+	Node* newNode = new Node(newVal);
+	newNode -> next = temp -> next;
+	temp -> next = newNode;
+	return head;
 }
+
+Node* delete_begin(Node* head) {
+
+	Node* temp = head;
+	head = head -> next;
+
+	free(temp);
+	cout << "delete operation completed \nupdated list : " << nline;
+	print(head);
+	return head;
+
+}
+
+Node* delete_end(Node* head) {
+
+	Node* temp = head;
+
+	if (temp -> next == NULL) {
+		free(temp);
+		return NULL;
+	}
+
+	while (temp -> next != NULL) {
+		temp = temp -> next;
+	}
+
+	temp = NULL;
+	free(temp);
+	return head;
+}
+
+Node* deleting_node_after_given_node(Node* head, int givenVal) {
+
+	Node* temp = head;
+
+	while (temp -> data != givenVal) {
+		temp = temp -> next;
+	}
+
+	// now temp is pointing to the given value;
+
+	if (temp -> next != NULL) {
+
+		// if there is a node present after given value;
+
+		Node* delNode = temp -> next;
+
+		if (delNode -> next != NULL) {
+
+			// connecting the linklist chain if next node is present after deleteNode;
+
+			temp -> next = delNode -> next;
+		}
+		delNode = NULL;
+		free(delNode);
+	}
+
+	return head;
+}
+
+
 
 int main() {
 
@@ -107,7 +183,7 @@ int main() {
 	print(head);
 
 
-	head = insert_node_after_given_node(head, 1000000, 15);
+	head = deleting_node_after_given_node(head, 13);
 	print(head);
 
 

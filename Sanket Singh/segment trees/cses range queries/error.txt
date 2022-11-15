@@ -1,0 +1,12 @@
+s 1
+e 1
+segTree[tIdx] 2
+tIdx 9
+s 2
+e 3
+segTree[tIdx] 0
+tIdx 5
+s 4
+e 4
+segTree[tIdx] 1
+tIdx 12

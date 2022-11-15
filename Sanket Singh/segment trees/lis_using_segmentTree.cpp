@@ -103,6 +103,8 @@ void update(vi &lis, vi &segTree, int s, int e, int tIdx, int i, ll v) {
 	segTree[tIdx] = max(segTree[2 * tIdx] , segTree[2 * tIdx + 1]);
 }
 
+
+
 ll query(vi &segTree, int s, int e, int tIdx, ll l, ll r) {
 
 	if (r < s or l > e) return 0;

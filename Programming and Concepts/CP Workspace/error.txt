@@ -1,10 +1,30 @@
-vec [ 1 2 3 4 5 ]
-currNum 1
-currNum 1
-currNum 1
-vec [ -6 -5 -3 0 ]
-currNum 3
-currNum 2
-vec [ 2 3 4 ]
-currNum 1
-vec [ 3 4 ]
+vertex 0
+child 1
+vertex 1
+child 3
+vertex 3
+child 2
+ans 1
+vertex 3
+child 4
+vertex 4
+child 5
+vertex 5
+child 6
+vertex 6
+child 7
+vertex 7
+child 8
+vertex 8
+child 10
+vertex 10
+child 9
+ans 1
+ans 2
+ans 3
+ans 4
+ans 5
+ans 6
+ans 8
+ans 9
+ans 10
