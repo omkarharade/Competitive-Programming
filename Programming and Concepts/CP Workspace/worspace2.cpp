@@ -20,6 +20,7 @@ typedef unsigned long long ull;
 typedef long double lld;
 typedef vector<long long> vll;
 typedef vector<int> vi;
+typedef pair<int, int> pii;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
 #ifndef ONLINE_JUDGE
@@ -76,13 +77,6 @@ void file_i_o()
 void solve() {
 	// solve here....
 
-	vector<int> vec = {1, 3, 5, 10, -1};
-
-	debug(vec)
-
-	sort(all(vec));
-
-	debug(vec)
 
 }
 
@@ -93,7 +87,7 @@ int main()
 	// Write your code here....
 
 	int t = 1;
-	// cin >> t;
+	cin >> t;
 
 	while (t-- > 0)
 	{
