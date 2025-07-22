@@ -42,6 +42,9 @@ void sort_zero_ones_twos(int arr[], int n) {
 
 }
 
+
+// below function executes the method similar to dutch national flag problem
+
 void sort_zero_ones_twos2(int arr[], int n) {
 
 	int lo = 0, hi = n - 1, mid = 0;

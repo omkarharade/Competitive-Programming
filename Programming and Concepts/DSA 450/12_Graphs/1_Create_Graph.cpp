@@ -6,7 +6,7 @@ const int N = 1e3 + 10;
 int graph1[N][N];
 
 // vector<int> graph2[N];
-vector<pair<int, int>> graph2[N]; // for weighted graph
+vector<pair<int, int>> graph2[N];
 
 
 int main() {

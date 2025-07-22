@@ -2,6 +2,9 @@
 using namespace std;
 #define nline "\n";
 
+
+// function for multiplication processing
+
 void multiply(vector<int> &arr, int num) {
 
 	int carry = 0;
@@ -20,6 +23,9 @@ void multiply(vector<int> &arr, int num) {
 	}
 }
 
+
+
+
 vector<int> factorial(int N) {
 	// code here
 
@@ -35,17 +41,28 @@ vector<int> factorial(int N) {
 		ans.push_back(digit);
 	}
 
+	// above code adds the digits to each array element in reverse order
+
+
+
+	// to get factorial value we multiply N with N-1, N-2 .. . . . . .3, 2, 1 below
+
 	for (int i = N - 1; i >= 2; i--) {
 		multiply(ans, i);
 	}
+
+
+	// now processing is done so answer is present in reverse order now to get original answer
+	// reverse the array elements
 
 	int lptr = 0, rptr = ans.size() - 1;
 
 	while (lptr < rptr) {
 
-		swap(ans[lptr++], ans[rptr--]);
+		swap(ans[lptr++], ans[rptr--]); // reverse the elements
 	}
 
+	// return the answer array
 	return ans;
 
 }
