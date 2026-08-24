@@ -2,106 +2,137 @@
 using namespace std;
 #define nline "\n";
 
-struct Node {
+	
+class Node {
+ public:
+    int data ;
+    Node *next ;
 
-	int data;
-	struct Node* next;
-
-	Node(int data) {
-
-		this -> data = data;
-		this -> next = NULL;
-	}
+    Node(int x) {
+        data = x ;
+        next = nullptr ;
+    }
 };
 
-struct Linkedlist {
-
-	Node* head;
-	Linkedlist() { head = NULL; }
-
-	void reverse_iter() {
-
-		Node *curr = head;
-		Node *prev = NULL, *next = NULL;
-
-		while (curr != NULL) {
-
-			next = curr -> next; // update next pointer
-			curr -> next = prev;  // this is the reversed link
 
 
-			// shifting the pointer by one place each
+/**
+ * 
+ * Iterative traversal of Linked List
+ * Time : O(n)
+ * Space : O(1)
+ * 
+ **/
 
-			prev = curr;
-			curr = next;
 
-		}
+Node* reverseListIter(Node* head) {
 
-		head = prev;
+	Node* prevNode = nullptr;
+	Node* currNode = head;
+	Node* nextNode;
 
+	if(head == nullptr) return head;
+
+	while(currNode != nullptr){
+
+	    // save the current node's next node
+	    nextNode = currNode -> next;
+
+	    // reverse the current node's connection
+	    currNode -> next = prevNode;
+
+	    // update the prev node and current node
+	    prevNode = currNode;
+	    currNode = nextNode;
 	}
 
-	void reverse_recur(Node* curr, Node* prev = NULL) {
-
-		// base case
-		if (curr == NULL) return;
-
-		Node* next = curr -> next;
-		curr -> next = prev;
-		head = curr;
-
-		reverse_recur(next, curr);
-	}
+	return prevNode;
+}
 
 
-	// reverse linkedlist using stack
-	void reverse_stack()
-	{
-		// Create a stack "s" of Node type
-		stack<Node*> s;
-		Node* temp = head;
-		while (temp->next != NULL) {
-			// Push all the nodes in to stack
-			s.push(temp);
-			temp = temp->next;
-		}
+/**
+ * 
+ * Recursive traversal of Linked List
+ * Time : O(n)
+ * Space : O(n)
+ * 
+ **/
 
-		head = temp;
+Node* reverseListRecur(Node* currNode, Node* prevNode, Node* nextNode){
+    
+    // return the prev node which now points to head of this reversed linked list 
+	if(currNode == nullptr) return prevNode;
 
-		while (!s.empty()) {
-			// Store the top value of stack in list
-			temp->next = s.top();
-			// Pop the value from stack
-			s.pop();
-			// update the next pointer in the list
-			temp = temp->next;
-		}
+	// update the next pointer to current's next pointer
+	nextNode = currNode -> next;
 
-		temp->next = NULL;
+	// reverse the current node's connection to its previous node
+	currNode -> next = prevNode;
 
-	}
+	// repeat the same process with nextNode as currNode, currNode as prevNode
+	reverseListRecur(nextNode, currNode, nextNode);
+
+}
+
+Node* reverseList(Node* head) {
+    // code here
+    
+    Node* currNode = head;
+    Node* prevNode = nullptr;
+    Node* nextNode = nullptr;
+    
+    return reverseListRecur(currNode, prevNode, nextNode);
+    
+}
+
+
+/**
+ * 
+ * Iterative traversal of Linked List using Stack
+ * Time : O(n)
+ * Space : O(n)
+ * 
+ * */
 
 
 
-	void print() {
+Node* reverseList2(Node* head) {
+    // code here
+    
+    stack<Node*> st;
+    Node* curr = head;
+    
 
-		struct Node* temp = head;
+    // add all nodes except the last node to the stack so 
+    // the last node of list comes at top of stack
+    while(curr -> next != nullptr){
+        
+        st.push(curr);
+        curr = curr -> next;
+    }
+    
+    // make the last node as new head of the linked list
+	head = curr;
+    
+    // reverse all the connections
+    while(!st.empty()){
+        
+        curr -> next = st.top();
+        st.pop();
 
-		while (temp != NULL ) {
+        // update the curr node
+        curr = curr -> next;
+    }
+    
+    // the last node's next pointer is not reversed, 
+    // we need to do it outside the loop 
+    curr -> next = nullptr;
 
-			cout << (temp -> data) << " ";
-			temp = temp -> next;
+    return updatedHead;
+}
 
-		}
-	}
 
-	void push(int data) {
 
-		Node* temp = new Node(data);
-		temp -> next = head;
-		head = temp;
-	}
-};
 
 int main() {
 

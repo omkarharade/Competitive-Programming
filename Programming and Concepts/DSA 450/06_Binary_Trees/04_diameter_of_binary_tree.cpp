@@ -29,6 +29,15 @@ struct TreeNode {
 /*
 	problem link: https://leetcode.com/problems/diameter-of-binary-tree/description/
 
+
+	Naive approach : Calculating height of left and right subtree for each node
+	individually 
+
+	Time Complexity: O(N*N)
+	Space Complexity: O(h) where h is the height of the binary tree
+
+	
+	Efficient Solution : (This solution)
 	max of the summation of height from left and right subtree of every nodes
 	give us the diameter of the binary tree
 
@@ -58,6 +67,7 @@ int diameterOfBinaryTree(TreeNode* root) {
 	return diameter;
 
 }
+
 
 int main() {
 
