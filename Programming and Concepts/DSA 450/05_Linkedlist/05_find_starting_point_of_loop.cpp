@@ -49,23 +49,25 @@ int cycleStart(Node *head) {
 int cycleStart2(Node *head) {
   // code here
 
+  if (head == nullptr || head->next == nullptr)
+    return -1;
+
   Node *slowPtr = head;
   Node *fastPtr = head;
 
-  bool loopExists = false;
+  slowPtr = slowPtr->next;
+  fastPtr = fastPtr->next->next;
 
-  while (fastPtr->next != nullptr && fastPtr->next->next != nullptr) {
+  while (fastPtr && fastPtr->next) {
+
+    if (slowPtr == fastPtr)
+      break;
 
     slowPtr = slowPtr->next;
     fastPtr = fastPtr->next->next;
-
-    if (slowPtr == fastPtr) {
-      loopExists = true;
-      break;
-    }
   }
 
-  if (!loopExists)
+  if (slowPtr != fastPtr)
     return -1;
 
   // loop exists, both slow and fast pointer are at the first meeting point
